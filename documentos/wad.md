@@ -128,7 +128,7 @@ ALTER TABLE "bookings" ADD FOREIGN KEY ("id_room") REFERENCES "rooms" ("id");
 ALTER TABLE "bookings" ADD FOREIGN KEY ("id_user") REFERENCES "rooms" ("id");
 ```
 
-#### Relacionamentos e Cardinalidade
+### Relacionamentos e Cardinalidade
 **Usuários <-> Salas**
 * Cada sala pode ter uma reserva por usuário (FK: is_user), relação 1:N.
 
