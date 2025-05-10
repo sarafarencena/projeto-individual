@@ -36,7 +36,7 @@ A persona Giulia Fachinelli foi criada para representar os principais empecilhos
 <sub>Figura 1 - Persona</sub>
 </div>
 
-<img src="../assets/personaGiulia.png">
+<img src="../assets/assets_WAD/personaGiulia.png">
 
 <div align="center">
 </div>
@@ -67,7 +67,21 @@ Análise da US02 com base nos critérios **INVEST**:
 
 ### 3.1. Modelagem do banco de dados  (Semana 3)
 
-*Posicione aqui os diagramas de modelos relacionais do seu banco de dados, apresentando todos os esquemas de tabelas e suas relações. Utilize texto para complementar suas explicações, se necessário.*
+*Posicione aqui os diagramas de modelos relacionais do seu banco de dados, apresentando todos os esquemas de tabelas e suas relações. Utilize texto para complementar suas explicações, se necessário.* <br>
+
+<div align="center">
+<sub>Figura 2 - Modelo Relacional </sub>
+</div>
+
+<img src="../assets/assets_WAD/InteliRooms.png">
+
+<div align="center">
+</div>
+
+<div align="center">
+<sub>Fonte: Autoria própria, criado com dbdiagram.io (2025)</sub>
+</div>
+<br>
 
 *Posicione também o modelo físico com o Schema do BD (arquivo .sql)*
 
