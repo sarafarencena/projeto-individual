@@ -1,5 +1,5 @@
 # InteliRooms | Projeto Individual M2
-O **InteliRooms** é um sistema em desenvolvimento que visa otimizar a reserva de salas para os alunos do Inteli (Instituto de Tecnologia e Liderança), permitindo que os usuários consultem diretamente a disponibilidade de salas e horários, além de agendar, alterar e cancelar reservas.
+O **InteliRooms** é um sistema em desenvolvimento que visa otimizar a reserva de salas para os alunos do Inteli (Instituto de Tecnologia e Liderança), permitindo consulta direta a disponibilidade de salas e horários, além de agendar, alterar e cancelar reservas.
 
 ## Estrutura de Pastas (MVC)
 Este projeto é um boilerplate básico para uma aplicação Node.js seguindo o padrão MVC (Model-View-Controller), utilizando PostgreSQL como banco de dados.
