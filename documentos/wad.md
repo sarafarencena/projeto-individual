@@ -67,7 +67,8 @@ Análise da US02 com base nos critérios **INVEST**:
 
 ### 3.1. Modelagem do banco de dados  (Semana 3)
 
-*Posicione aqui os diagramas de modelos relacionais do seu banco de dados, apresentando todos os esquemas de tabelas e suas relações. Utilize texto para complementar suas explicações, se necessário.* <br>
+### Modelo Relacional
+O modelo relacional desenvolvido para o **InteliRooms** busca representar os alunos, as salas disponíveis e as reservas realizados. Cada entidade possui atributos que ajudam no controle de permissões.
 
 <div align="center">
 <sub>Figura 2 - Modelo Relacional </sub>
@@ -83,7 +84,57 @@ Análise da US02 com base nos critérios **INVEST**:
 </div>
 <br>
 
-*Posicione também o modelo físico com o Schema do BD (arquivo .sql)*
+* **Usuários** (users): representa os alunos do Inteli, principais usuários do sistema.
+
+* **Salas** (rooms): representas as salas disponíveis para reserva de acordo com as regras institucionais.
+
+* **Reservas** (bookings): representa as reservas realizadas pelo usuário.
+
+### Modelo Físico
+Abaixo é possível visualizar a estrutura das tabelas e seus rlecionamentos em SQL:
+
+```sql
+CREATE TABLE "users" (
+  "id" integer PRIMARY KEY,
+  "name" varchar,
+  "class" varchar,
+  "course" varchar,
+  "group" varchar,
+  "role" varchar,
+  "email" varchar,
+  "created_at" timestamp
+);
+
+CREATE TABLE "rooms" (
+  "id" int PRIMARY KEY,
+  "id_user" int,
+  "name" varchar,
+  "floor" varchar
+);
+
+CREATE TABLE "bookings" (
+  "id" int PRIMARY KEY,
+  "id_user" varchar,
+  "id_room" varchar,
+  "time" varchar,
+  "created_at" timestamp,
+  "updated_at" timestamp
+);
+
+ALTER TABLE "rooms" ADD FOREIGN KEY ("id_user") REFERENCES "users" ("id");
+
+ALTER TABLE "bookings" ADD FOREIGN KEY ("id_room") REFERENCES "rooms" ("id");
+
+ALTER TABLE "bookings" ADD FOREIGN KEY ("id_user") REFERENCES "rooms" ("id");
+```
+
+#### Relacionamentos e Cardinalidade
+**Usuários <-> Salas**
+* Cada sala pode ter uma reserva por usuário (FK: is_user), relação 1:N.
+
+**Usuários  <-> Agendamentos**
+* Cada agendamento pertence a um usuário, relação 1:N.
+
 
 ### 3.1.1 BD e Models (Semana 5)
 *Descreva aqui os Models implementados no sistema web*
