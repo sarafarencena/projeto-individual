@@ -150,9 +150,85 @@ ALTER TABLE "bookings" ADD FOREIGN KEY ("id_user") REFERENCES "rooms" ("id");
   
 *Adicione as setas e explicações sobre como os dados fluem entre o Model, Controller e View.*
 
-### 3.3. Wireframes (Semana 03)
+### 3.3. Wireframes
 
-*Posicione aqui as imagens do wireframe construído para sua solução e, opcionalmente, o link para acesso (mantenha o link sempre público para visualização).*
+A seguir, são apresentados os wireframes das principais funcionalidades, que se relacionam diretamente às User Stories (US).
+
+#### Tela Principal
+
+A tela principal se relaciona diretamente com a **US01**, pois mostra as salas disponíveis para reserva, colaborando com o planejamento do(a) estudante.
+
+<div align="center">
+
+<sub>Figura 3 - Wireframe Tela Principal </sub>
+</div>
+
+<img src="../assets/assets_WAD/telaPrincipal.jpg">
+
+<div align="center">
+</div>
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
+<br>
+
+
+#### Tela de Reserva
+A partir da tela principal, é possível selecionar um horário disponível na sala desejada, o que direciona o/a estudante para a tela de reserva, permitindo que uma reserva seja feita sem conflitos, de acordo com a **US02**.
+
+<div align="center">
+
+<sub>Figura 4 - Wireframe Tela de Reserva </sub>
+</div>
+
+<img src="../assets/assets_WAD/telaReserva.jpg">
+
+<div align="center">
+</div>
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
+<br>
+
+#### Tela de Cancelamento/Alteração
+Por fim, também na tela principal, ao clicar na reserva feita, o/a estudante é direcionado(a) a tela de cancelamento/alteração, atendendo à necessidade da **US03**.
+
+<div align="center">
+
+<sub>Figura 5 - Wireframe Tela de Cancelamento/Alteração </sub>
+</div>
+
+<img src="../assets/assets_WAD/telaCancelarAlterar.jpg">
+
+<div align="center">
+</div>
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
+<br>
+
+#### Navegabilidade
+Desse modo, as possíveis navegações entre telas estão representadas a seguir:
+
+<div align="center">
+
+<sub>Figura 6 - Wireframe Navegação entre Telas </sub>
+</div>
+
+<img src="../assets/assets_WAD/wireframeCompleto.jpg">
+
+<div align="center">
+</div>
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
+<br>
+
+[Link complementar wireframe](https://drive.google.com/file/d/1_qHyUGxFzGBCzPKAgbrjRGp-0SB0HJKa/view?usp=sharing)
 
 ### 3.4. Guia de estilos (Semana 05)
 
