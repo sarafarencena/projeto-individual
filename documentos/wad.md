@@ -154,13 +154,35 @@ ALTER TABLE "bookings" ADD FOREIGN KEY ("id_user") REFERENCES "rooms" ("id");
 
 A seguir, são apresentados os wireframes das principais funcionalidades, que se relacionam diretamente às User Stories (US).
 
-#### Tela Principal
-
-A tela principal se relaciona diretamente com a **US01**, pois mostra as salas disponíveis para reserva, colaborando com o planejamento do(a) estudante.
+#### Navegabilidade
+Para atender os requisitos do projeto enquanto solução para a persona que representa os alunos do Inteli, foi desenvolvido o wireframe abaixo:
 
 <div align="center">
 
-<sub>Figura 3 - Wireframe Tela Principal </sub>
+<sub>Figura 3 - Wireframe Navegação entre Telas </sub>
+</div>
+
+<img src="../assets/assets_WAD/wireframeCompleto.jpg">
+
+<div align="center">
+</div>
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
+<br>
+
+Nesse wireframe, a tela principal será acessada na Adalove, plataforma utilizada pelos estudantes do Inteli, por meio de um widget no header, permitindo que os alunos selecionem um horário disponível da sala que desejam reservar. Assim, serão direcionados à uma tela de confirmação, que quando realizada a reserva, os redirecionam à tela principal de visualizaçao da disponibilidade de salas. Além disso, também é permitido que o usuário altere ou cancele um agendamento feito na tela principal.
+
+#### Tela Principal
+
+A tela principal se relaciona diretamente com a **US01**, pois mostra as salas disponíveis para reserva, colaborando com o planejamento do(a) estudante. Nela, é possível visualizar as salas, que se encontram nas coluanas, bem como os horários disponpiveis nas linhas para reserva. 
+
+Cada item dessa "matriz" é clicável, e leva para as telas que serão detalhadas a seguir, bem parecido com o Google Calendar, onde as colunas são na verdade os dias da semana, o que nesse caso não se aplica visto que as salas só podem ser reservadas para o dia em questão. 
+
+<div align="center">
+
+<sub>Figura 4 - Wireframe Tela Principal </sub>
 </div>
 
 <img src="../assets/assets_WAD/telaPrincipal.jpg">
@@ -179,7 +201,7 @@ A partir da tela principal, é possível selecionar um horário disponível na s
 
 <div align="center">
 
-<sub>Figura 4 - Wireframe Tela de Reserva </sub>
+<sub>Figura 5 - Wireframe Tela de Reserva </sub>
 </div>
 
 <img src="../assets/assets_WAD/telaReserva.jpg">
@@ -197,7 +219,7 @@ Por fim, também na tela principal, ao clicar na reserva feita, o/a estudante é
 
 <div align="center">
 
-<sub>Figura 5 - Wireframe Tela de Cancelamento/Alteração </sub>
+<sub>Figura 6 - Wireframe Tela de Cancelamento/Alteração </sub>
 </div>
 
 <img src="../assets/assets_WAD/telaCancelarAlterar.jpg">
@@ -210,25 +232,7 @@ Por fim, também na tela principal, ao clicar na reserva feita, o/a estudante é
 </div>
 <br>
 
-#### Navegabilidade
-Desse modo, as possíveis navegações entre telas estão representadas a seguir:
-
-<div align="center">
-
-<sub>Figura 6 - Wireframe Navegação entre Telas </sub>
-</div>
-
-<img src="../assets/assets_WAD/wireframeCompleto.jpg">
-
-<div align="center">
-</div>
-
-<div align="center">
-<sub>Fonte: Autoria própria (2025)</sub>
-</div>
-<br>
-
-[Link complementar wireframe](https://drive.google.com/file/d/1_qHyUGxFzGBCzPKAgbrjRGp-0SB0HJKa/view?usp=sharing)
+[Link complementar wireframe](https://drive.google.com/file/d/1gbPN1vG688K-E2yLvHXdORcSTWxpqRHO/view?usp=sharing)
 
 ### 3.4. Guia de estilos (Semana 05)
 
