@@ -155,7 +155,7 @@ ALTER TABLE "bookings" ADD FOREIGN KEY ("id_user") REFERENCES "rooms" ("id");
 A seguir, são apresentados os wireframes das principais funcionalidades, que se relacionam diretamente às User Stories (US).
 
 #### Navegabilidade
-Para atender os requisitos do projeto enquanto solução para a persona que representa os alunos do Inteli, foi desenvolvido o wireframe abaixo:
+Para atender os requisitos do projeto enquanto solução para a persona que representa os alunos do Inteli, foi desenvolvida a sequência de wireframes abaixo:
 
 <div align="center">
 
@@ -175,10 +175,7 @@ Para atender os requisitos do projeto enquanto solução para a persona que repr
 Nesse wireframe, a tela principal será acessada na Adalove, plataforma utilizada pelos estudantes do Inteli, por meio de um widget no header, permitindo que os alunos selecionem um horário disponível da sala que desejam reservar. Assim, serão direcionados à uma tela de confirmação, que quando realizada a reserva, os redirecionam à tela principal de visualizaçao da disponibilidade de salas. Além disso, também é permitido que o usuário altere ou cancele um agendamento feito na tela principal.
 
 #### Tela Principal
-
-A tela principal se relaciona diretamente com a **US01**, pois mostra as salas disponíveis para reserva, colaborando com o planejamento do(a) estudante. Nela, é possível visualizar as salas, que se encontram nas coluanas, bem como os horários disponpiveis nas linhas para reserva. 
-
-Cada item dessa "matriz" é clicável, e leva para as telas que serão detalhadas a seguir, bem parecido com o Google Calendar, onde as colunas são na verdade os dias da semana, o que nesse caso não se aplica visto que as salas só podem ser reservadas para o dia em questão. 
+A tela principal se relaciona diretamente com a **US01**, pois mostra as salas disponíveis para reserva, colaborando com o planejamento do(a) estudante. Nela, é possível visualizar as salas, que se encontram nas colunas, bem como os horários disponpiveis nas linhas para reserva. 
 
 <div align="center">
 
@@ -195,6 +192,7 @@ Cada item dessa "matriz" é clicável, e leva para as telas que serão detalhada
 </div>
 <br>
 
+Cada item dessa "matriz" é clicável e direciona o usuário para as telas que serão detalhadas a seguir. É similar ao Google Calendar, no qual as colunas representam os dias da semana, mas, neste caso, isso não se aplica, visto que as salas só podem ser reservadas para o dia em questão.
 
 #### Tela de Reserva
 A partir da tela principal, é possível selecionar um horário disponível na sala desejada, o que direciona o/a estudante para a tela de reserva, permitindo que uma reserva seja feita sem conflitos, de acordo com a **US02**.
