@@ -195,7 +195,7 @@ A tela principal se relaciona diretamente com a **US01**, pois mostra as salas d
 Cada item dessa "matriz" é clicável e direciona o usuário para as telas que serão detalhadas a seguir. É similar ao Google Calendar, no qual as colunas representam os dias da semana, mas, neste caso, isso não se aplica, visto que as salas só podem ser reservadas para o dia em questão.
 
 #### Tela de Reserva
-A partir da tela principal, é possível selecionar um horário disponível na sala desejada, o que direciona o/a estudante para a tela de reserva, permitindo que uma reserva seja feita sem conflitos, de acordo com a **US02**.
+A partir da tela principal, é possível selecionar um horário disponível na sala desejada, o que direciona o/a estudante para a tela de reserva, represenatada pelo wireframe do modal abaixo, permitindo que uma reserva seja feita sem conflitos, de acordo com a **US02**.
 
 <div align="center">
 
@@ -213,7 +213,7 @@ A partir da tela principal, é possível selecionar um horário disponível na s
 <br>
 
 #### Tela de Cancelamento/Alteração
-Por fim, também na tela principal, ao clicar na reserva feita, o/a estudante é direcionado(a) a tela de cancelamento/alteração, atendendo à necessidade da **US03**.
+Por fim, também na tela principal, ao clicar na reserva realizada, o(a) estudante é direcionado(a) para um modal de cancelamento/alteração, apresentado no wireframe a seguir, que atende à necessidade da **US03**.
 
 <div align="center">
 
