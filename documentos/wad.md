@@ -91,7 +91,7 @@ O modelo relacional desenvolvido para o **InteliRooms** busca representar os alu
 * **Reservas** (bookings): representa as reservas realizadas pelo usuário.
 
 ### Modelo Físico
-Abaixo é possível visualizar a estrutura das tabelas e seus rlecionamentos em SQL:
+Abaixo é possível visualizar a estrutura das tabelas e seus relacionamentos em SQL:
 
 ```sql
 CREATE TABLE "users" (
