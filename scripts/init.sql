@@ -1,4 +1,4 @@
-CREATE TABLE "users" (
+CREATE TABLE IF NOT EXISTS "users" (
   "id" int PRIMARY KEY,
   "name" varchar,
   "class" varchar,
@@ -9,14 +9,14 @@ CREATE TABLE "users" (
   "created_at" timestamp
 );
 
-CREATE TABLE "rooms" (
+CREATE TABLE IF NOT EXISTS "rooms" (
   "id" int PRIMARY KEY,
   "id_user" int,
   "name" varchar,
   "floor" varchar
 );
 
-CREATE TABLE "bookings" (
+CREATE TABLE IF NOT EXISTS "bookings" (
   "id" int PRIMARY KEY,
   "id_room" int,
   "id_user" int,
