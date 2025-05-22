@@ -3,7 +3,9 @@ const express = require('express');
 const app = express();
 const db = require('./config/db');
 const path = require('path');
+const cors = require('cors');
 
+app.use(cors());
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -15,6 +17,15 @@ db.connect()
 
     const userRoutes = require('./routes/userRoutes');
     app.use('/users', userRoutes);
+
+    const authRoutes = require('./routes/authRoutes');
+    app.use('/auth', authRoutes);
+
+    const roomRoutes = require('./routes/roomRoutes');
+    app.use('/rooms', roomRoutes);
+
+    const bookingRoutes = require('./routes/bookingRoutes');
+    app.use('/bookings', bookingRoutes);
 
     const frontendRoutes = require('./routes/frontRoutes');
     app.use('/', frontendRoutes);

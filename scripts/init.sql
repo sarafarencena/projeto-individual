@@ -1,5 +1,5 @@
 CREATE TABLE "users" (
-  "id" integer PRIMARY KEY,
+  "id" int PRIMARY KEY,
   "name" varchar,
   "class" varchar,
   "course" varchar,
@@ -18,8 +18,8 @@ CREATE TABLE "rooms" (
 
 CREATE TABLE "bookings" (
   "id" int PRIMARY KEY,
-  "id_user" varchar,
-  "id_room" varchar,
+  "id_room" int,
+  "id_user" int,
   "time" varchar,
   "created_at" timestamp,
   "updated_at" timestamp
