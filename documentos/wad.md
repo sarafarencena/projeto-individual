@@ -234,8 +234,6 @@ Por fim, também na tela principal, ao clicar na reserva realizada, o(a) estudan
 
 ### 3.4. Guia de estilos
 
-*Descreva aqui orientações gerais para o leitor sobre como utilizar os componentes do guia de estilos de sua solução.*
-
 O mini guia de estilos estabelece os padrões visuais da aplicação InteliRooms, desenvolvidos com base na identidade visual da Adalove. Como uma solução projetada visando uma futura integração à plataforma principal, o InteliRooms mantém coerência com o design system estabelecido, adaptando-o às necessidades específicas para reserva de salas.
 
 O documento a seguir reúne os elementos fundamentais que garantem harmonia visual entre as aplicações, preservando a identidade da Adalove enquanto assegura que a identificação do usuário com o InteliRooms.
