@@ -175,7 +175,7 @@ Para atender os requisitos do projeto enquanto solução para a persona que repr
 Nesse wireframe, a tela principal será acessada na Adalove, plataforma utilizada pelos estudantes do Inteli, por meio de um widget no header, permitindo que os alunos selecionem um horário disponível da sala que desejam reservar. Assim, serão direcionados à uma tela de confirmação, que quando realizada a reserva, os redirecionam à tela principal de visualizaçao da disponibilidade de salas. Além disso, também é permitido que o usuário altere ou cancele um agendamento feito na tela principal.
 
 #### Tela Principal
-A tela principal se relaciona diretamente com a **US01**, pois mostra as salas disponíveis para reserva, colaborando com o planejamento do(a) estudante. Nela, é possível visualizar as salas, que se encontram nas colunas, bem como os horários disponpiveis nas linhas para reserva. 
+A tela principal se relaciona diretamente com a **US01**, pois mostra as salas disponíveis para reserva, colaborando com o planejamento do(a) estudante. Nela, é possível visualizar as salas, que se encontram nas colunas, bem como os horários disponíveis nas linhas para reserva. 
 
 <div align="center">
 
@@ -195,7 +195,7 @@ A tela principal se relaciona diretamente com a **US01**, pois mostra as salas d
 Cada item dessa "matriz" é clicável e direciona o usuário para as telas que serão detalhadas a seguir. É similar ao Google Calendar, no qual as colunas representam os dias da semana, mas, neste caso, isso não se aplica, visto que as salas só podem ser reservadas para o dia em questão.
 
 #### Tela de Reserva
-A partir da tela principal, é possível selecionar um horário disponível na sala desejada, o que direciona o/a estudante para a tela de reserva, represenatada pelo wireframe do modal abaixo, permitindo que uma reserva seja feita sem conflitos, de acordo com a **US02**.
+A partir da tela principal, é possível selecionar um horário disponível na sala desejada, o que direciona o/a estudante para a tela de reserva, representada pelo wireframe do modal abaixo, permitindo que uma reserva seja feita sem conflitos, de acordo com a **US02**.
 
 <div align="center">
 
@@ -240,6 +240,101 @@ Por fim, também na tela principal, ao clicar na reserva realizada, o(a) estudan
 ### 3.5. Protótipo de alta fidelidade (Semana 05)
 
 *Posicione aqui algumas imagens demonstrativas de seu protótipo de alta fidelidade e o link para acesso ao protótipo completo (mantenha o link sempre público para visualização).*
+
+#### Tela de Login
+A tela de login serve como ponto de entrada seguro para a aplicação. Embora o objetivo final seja a integração com a plataforma Adalove, esta tela o acesso dos usuários ao sistema de reservas, respeitando as restrições institucionais.
+
+<div align="center">
+
+<sub>Figura X - Tela de Login </sub>
+</div>
+
+<img src="../assets/assets_WAD/tela-login.png">
+
+<div align="center">
+</div>
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
+<br>
+
+#### Tela de Cadastro (Signup)
+Embora o objetivo final seja a integração com a plataforma Adalove, a tela de cadastro permite atualmente que novos usuários se registrem no sistema, coletando informações essenciais para aplicar as regras de negócio adequadas (restrições por turma, grupo e curso).
+
+<div align="center">
+
+<sub>Figura X - Tela de Sign-up </sub>
+</div>
+
+<img src="../assets/assets_WAD/tela-signup.png">
+
+<div align="center">
+</div>
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
+<br>
+
+#### Tela Principal
+A tela principal conta com uma matriz de salas e horários que permite visualização clara da disponibilidade e acesso direto às funcionalidades de reserva, alteração e cancelamento.
+
+<div align="center">
+
+<sub>Figura X - Tela Principal </sub>
+</div>
+
+<img src="../assets/assets_WAD/tela-principal.png">
+
+<div align="center">
+</div>
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
+<br>
+
+A partir da tela principal, o usuário pode acessar tanto a tela de reserva, quanto a de cancelamento/alteração, demonstradas a seguir.
+
+#### Tela de Reserva
+A funcionalidade de reserva é implementada através de um modal (pop-up) que sobrepõe a tela principal. Este modal é ativado automaticamente quando o usuário clica em um slot de horário disponível na grade, apresentando de forma clara as informações da sala e horário selecionados para confirmação da reserva. O design modal mantém o contexto da grade principal visível ao fundo, proporcionando uma experiência fluida e intuitiva ao usuário.
+
+<div align="center">
+
+<sub>Figura X - Tela de Reserva </sub>
+</div>
+
+<img src="../assets/assets_WAD/tela-reservar.png">
+
+<div align="center">
+</div>
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
+<br>
+
+#### Tela de Cancelamento/Alteração
+O gerenciamento de reservas existentes é realizado através de um modal (pop-up) que sobrepõe a tela principal, ativado quando o usuário clica em uma reserva já realizada na grade de horários. Este modal apresenta os detalhes completos da reserva selecionada e oferece duas opções principais de ação: alterar o horário da reserva ou cancelá-la completamente. O design modal preserva a visibilidade da grade ao fundo, permitindo que o usuário mantenha o contexto de sua decisão.
+
+<div align="center">
+
+<sub>Figura X - Tela de Cancelameto/Alteração </sub>
+</div>
+
+<img src="../assets/assets_WAD/tela-cancelar-alterar.png">
+
+<div align="center">
+</div>
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
+<br>
+
+
+Acesse aqui o link do [protótipo completo com navegabilidade](https://www.figma.com/design/C2nASxGdM7WYo5goAXgZRp/Ponderada-3---Prot%C3%B3tipo-e-Guia-de-Estilos-Inteli-Rooms?node-id=0-1&t=dMOCNcMjffRQwRqM-1).
 
 ### 3.6. WebAPI e endpoints (Semana 05)
 
