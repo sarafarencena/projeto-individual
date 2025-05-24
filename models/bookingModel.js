@@ -13,8 +13,8 @@ class Booking {
 
   static async create(data) {
     const result = await db.query(
-      'INSERT INTO bookings (id_user, id_room, time) VALUES ($1, $2, $3) RETURNING *',
-      [data.id_user, data.id_room, data.time]
+      'INSERT INTO bookings (id, id_user, id_room, time) VALUES ($1, $2, $3, $4) RETURNING *',
+      [data.id, data.id_user, data.id_room, data.time]
     );
     return result.rows[0];
   }

@@ -1,6 +1,7 @@
 const supabase = require('../config/db');
 
-class AuthService {    async signUp(email, password, userData = {}) {
+class AuthService {
+    async signUp(email, password, userData = {}) {
         const { data, error } = await supabase.auth.signUp({
             email,
             password,

@@ -13,8 +13,8 @@ class Room {
 
   static async create(data) {
     const result = await db.query(
-      'INSERT INTO rooms (id_user, name, floor) VALUES ($1, $2, $3) RETURNING *',
-      [data.id_user, data.name, data.floor]
+      'INSERT INTO rooms (id, id_user, name, floor) VALUES ($1, $2, $3, $4) RETURNING *',
+      [data.id, data.id_user, data.name, data.floor]
     );
     return result.rows[0];
   }

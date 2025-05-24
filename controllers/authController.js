@@ -2,7 +2,8 @@
 
 const authService = require('../services/authService');
 
-class AuthController {    async signUp(req, res) {
+class AuthController {
+    async signUp(req, res) {
         try {
             const { email, password, name, class: className, course, group } = req.body;
             const data = await authService.signUp(email, password, {
