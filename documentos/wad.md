@@ -239,7 +239,9 @@ Por fim, também na tela principal, ao clicar na reserva realizada, o(a) estudan
 
 ### 3.5. Protótipo de alta fidelidade (Semana 05)
 
-*Posicione aqui algumas imagens demonstrativas de seu protótipo de alta fidelidade e o link para acesso ao protótipo completo (mantenha o link sempre público para visualização).*
+O protótipo de alta fidelidade apresentado representa uma versão visual próxima a futura aplicação do InteliRooms, sistema de reservas de salas, integrando elementos de interface consistentes e uma experiência de usuário pensada a partir das necessidades específicas dos alunos, que foram mapeadas por meio da persona.
+
+Apesar de desenvolvido com foco na futura integração com a plataforma Adalove para autenticação unificada, o protótipo contempla soluções intermediárias que garantem a funcionalidade completa do sistema enquanto respeita as restrições institucionais atuais. Dessa forma, o sistema poderá operar de forma independente até que a integração definitiva seja implementada, sem comprometer a experiência do usuário ou a aplicação das regras de negócio necessárias.
 
 #### Tela de Login
 A tela de login serve como ponto de entrada seguro para a aplicação. Embora o objetivo final seja a integração com a plataforma Adalove, esta tela o acesso dos usuários ao sistema de reservas, respeitando as restrições institucionais.
