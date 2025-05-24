@@ -23,7 +23,6 @@ class AuthController {
             const { email, password } = req.body;
             const data = await authService.signIn(email, password);
             
-            // Set session cookie if needed
             if (data.session) {
                 res.cookie('session', data.session.access_token, {
                     httpOnly: true,
@@ -56,6 +55,15 @@ class AuthController {
                 return res.status(401).json({ error: 'Not authenticated' });
             }
             res.json(user);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+
+    async refreshToken(req, res) {
+        try {
+            const data = await authService.refreshToken();
+            res.json(data);
         } catch (error) {
             res.status(400).json({ error: error.message });
         }

@@ -1,62 +1,84 @@
-const supabase = require('../config/db');
+const supabase = require('../config/supabase');
+const db = require('../config/db');
 
 class AuthService {
     async signUp(email, password, userData = {}) {
-        const { data, error } = await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-                data: userData
-            }
-        });
-        
-        if (error) throw error;
-
-        if (data?.user) {
-            const { name, class: className, course, group } = userData;
-            const { error: insertError } = await supabase
-                .from('users')
-                .insert([
-                    {
-                        id: data.user.id,
-                        name,
-                        class: className,
-                        course,
-                        group,
-                        email,
-                        created_at: new Date().toISOString()
-                    }
-                ]);
+        try {
+            const { data, error } = await supabase.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: userData
+                }
+            });
             
-            if (insertError) throw insertError;
-        }
+            if (error) throw new Error(`Signup failed: ${error.message}`);
 
-        return data;
+            if (data?.user) {
+                const { name, class: className, course, group } = userData;
+                
+                try {
+                    await db.query(
+                        'INSERT INTO users (id, name, class, course, group_name, email, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+                        [data.user.id, name, className, course, group, email, new Date()]
+                    );
+                } catch (dbError) {
+                    console.error('Database insert error:', dbError);
+                }
+            }
+
+            return data;
+        } catch (error) {
+            throw new Error(`Authentication error: ${error.message}`);
+        }
     }
 
     async signIn(email, password) {
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
-        
-        if (error) throw error;
-        return {
-            user: data.user,
-            session: data.session
-        };
+        try {
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
+            
+            if (error) throw new Error(`Sign in failed: ${error.message}`);
+            
+            return {
+                user: data.user,
+                session: data.session
+            };
+        } catch (error) {
+            throw new Error(`Authentication error: ${error.message}`);
+        }
     }
 
     async signOut() {
-        const { error } = await supabase.auth.signOut();
-        if (error) throw error;
-        return { message: 'Signed out successfully' };
+        try {
+            const { error } = await supabase.auth.signOut();
+            if (error) throw new Error(`Sign out failed: ${error.message}`);
+            return { message: 'Signed out successfully' };
+        } catch (error) {
+            throw new Error(`Authentication error: ${error.message}`);
+        }
     }
 
     async getCurrentUser() {
-        const { data: { user }, error } = await supabase.auth.getUser();
-        if (error) throw error;
-        return user;
+        try {
+            const { data: { user }, error } = await supabase.auth.getUser();
+            if (error) throw new Error(`Get user failed: ${error.message}`);
+            return user;
+        } catch (error) {
+            throw new Error(`Authentication error: ${error.message}`);
+        }
+    }
+
+    async refreshToken() {
+        try {
+            const { data, error } = await supabase.auth.refreshSession();
+            if (error) throw new Error(`Token refresh failed: ${error.message}`);
+            return data;
+        } catch (error) {
+            throw new Error(`Authentication error: ${error.message}`);
+        }
     }
 }
 

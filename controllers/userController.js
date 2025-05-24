@@ -38,7 +38,7 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const { name, email } = req.body;
-    const updatedUser = await userModel.updateUser(req.params.id, name, email);
+    const updatedUser = await userModel.update(req.params.id, { name, email });
     if (updatedUser) {
       res.status(200).json(updatedUser);
     } else {
@@ -51,9 +51,9 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const deletedUser = await userModel.deleteUser(req.params.id);
+    const deletedUser = await userModel.delete(req.params.id);
     if (deletedUser) {
-      res.status(200).json(deletedUser);
+      res.status(200).json({ message: 'Usuário deletado' });
     } else {
       res.status(404).json({ error: 'Usuário não encontrado' });
     }
