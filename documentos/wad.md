@@ -232,12 +232,43 @@ Por fim, também na tela principal, ao clicar na reserva realizada, o(a) estudan
 
 [Link complementar wireframe](https://drive.google.com/file/d/1gbPN1vG688K-E2yLvHXdORcSTWxpqRHO/view?usp=sharing)
 
-### 3.4. Guia de estilos (Semana 05)
+### 3.4. Guia de estilos
 
 *Descreva aqui orientações gerais para o leitor sobre como utilizar os componentes do guia de estilos de sua solução.*
 
+O mini guia de estilos estabelece os padrões visuais da aplicação InteliRooms, desenvolvidos com base na identidade visual da Adalove. Como uma solução projetada visando uma futura integração à plataforma principal, o InteliRooms mantém coerência com o design system estabelecido, adaptando-o às necessidades específicas para reserva de salas.
 
-### 3.5. Protótipo de alta fidelidade (Semana 05)
+O documento a seguir reúne os elementos fundamentais que garantem harmonia visual entre as aplicações, preservando a identidade da Adalove enquanto assegura que a identificação do usuário com o InteliRooms.
+
+<div align="center">
+
+<sub>Figura X - Mini Guia de Estilos </sub>
+</div>
+
+<img src="../assets/assets_WAD/mini-guia-estilos.png">
+
+<div align="center">
+</div>
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
+<br>
+
+#### Orientações Gerais (uso do guia de estilos)
+* **Consistência:** Todos os elementos devem seguir rigorosamente as especificações de cores, tipografia e componentes definidos neste guia para manter a coesão visual da plataforma.
+* **Acessibilidade:** As combinações de cores foram testadas para garantir contraste adequado e legibilidade, atendendo aos padrões de acessibilidade web.
+* **Hierarquia Visual:** Utiliza hierarquia tipográfica e cromática para guiar o usuário através da interface, destacando informações importantes e organizando o conteúdo de modo que textos de maior hierarquia com cores vibrantes se destaquem sobre aqueles de menor hierarquia com tons neutros.
+  * Paleta de cores: marcada pelo contraste entre tons vibrantes e neutros, garantindo equilíbrio no destaque e na categorização de informações.
+  * Tipografia: hierarquia tipográfica clara e moderna, garantindo legibilidade em diferentes contextos e dispositivos.
+  * ícones: visual com traços vazados, que orientam o usuário a identificar facilmente as funcionalidades da aplicação.
+
+Esse mini guia de estilos serve como referência fundamental para o desenvolvimento e manutenção da identidade visual do InteliRooms, garantindo uma experiência consistente e fluida para os usuários da plataforma.
+
+[Acesse aqui o mini guia de estilos e o layout da aplicação](https://www.figma.com/design/C2nASxGdM7WYo5goAXgZRp/Ponderada-3---Prot%C3%B3tipo-e-Guia-de-Estilos-Inteli-Rooms?node-id=0-1&t=dMOCNcMjffRQwRqM-1).
+
+
+### 3.5. Protótipo de alta fidelidade
 
 O protótipo de alta fidelidade apresentado representa uma versão visual próxima a futura aplicação do InteliRooms, sistema de reservas de salas, integrando elementos de interface consistentes e uma experiência de usuário pensada a partir das necessidades específicas dos alunos, que foram mapeadas por meio da persona.
 
