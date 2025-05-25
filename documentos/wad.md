@@ -91,11 +91,11 @@ O modelo relacional desenvolvido para o **InteliRooms** busca representar os alu
 * **Reservas** (bookings): representa as reservas realizadas pelo usuário.
 
 ### Modelo Físico
-Abaixo é possível visualizar a estrutura das tabelas e seus relacionamentos em SQL:
+A seguir, é possível visualizar a estrutura das tabelas e suas relações em SQL:
 
 ```sql
-CREATE TABLE "users" (
-  "id" integer PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS "users" (
+  "id" int PRIMARY KEY,
   "name" varchar,
   "class" varchar,
   "course" varchar,
@@ -105,17 +105,17 @@ CREATE TABLE "users" (
   "created_at" timestamp
 );
 
-CREATE TABLE "rooms" (
+CREATE TABLE IF NOT EXISTS "rooms" (
   "id" int PRIMARY KEY,
   "id_user" int,
   "name" varchar,
   "floor" varchar
 );
 
-CREATE TABLE "bookings" (
+CREATE TABLE IF NOT EXISTS "bookings" (
   "id" int PRIMARY KEY,
-  "id_user" varchar,
-  "id_room" varchar,
+  "id_room" int,
+  "id_user" int,
   "time" varchar,
   "created_at" timestamp,
   "updated_at" timestamp
@@ -370,32 +370,6 @@ Acesse aqui o link do [protótipo completo com navegabilidade](https://www.figma
 ### 3.6. WebAPI e endpoints (Semana 05)
 
 *Utilize um link para outra página de documentação contendo a descrição completa de cada endpoint. Ou descreva aqui cada endpoint criado para seu sistema.*
-
-/ perguntar pro chat
-
-+ tabela
-+ a configuração do bd é feita por meio do código a seguir:
-
-const { Pool } = require('pg');
-require('dotenv').config();
-
-const isSSL = process.env.DB_SSL === 'true';
-
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-  ssl: isSSL ? { rejectUnauthorized: false } : false,
-});
-
-module.exports = {
-  query: (text, params) => pool.query(text, params),
-  connect: () => pool.connect(),
-};
-
-crie um arquivo .env para inserir as informações necessárias para a conexão.
 
 ### 3.7 Interface e Navegação (Semana 07)
 
