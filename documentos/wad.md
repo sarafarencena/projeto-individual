@@ -136,8 +136,86 @@ ALTER TABLE "bookings" ADD FOREIGN KEY ("id_user") REFERENCES "rooms" ("id");
 * Cada agendamento pertence a um usuário, relação 1:N.
 
 
-### 3.1.1 BD e Models (Semana 5)
-*Descreva aqui os Models implementados no sistema web*
+### 3.1.1 BD e Models
+Esta seção descreve os **models** implementados no sistema web, responsáveis pela **comunicação com o banco de dados PostgreSQL**. Cada model representa uma entidade do sistema, com métodos que executam as operações básicas (CRUD).
+
+---
+
+#### `User` Model
+Gerencia as informações dos usuários do sistema, como nome, e-mail e id.
+
+#### Campos da Tabela `users`
+
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `id` | UUID | Identificador único do usuário |
+| `name` | TEXT | Nome completo do usuário |
+| `email` | TEXT | E-mail do usuário |
+
+#### Métodos Disponíveis
+
+| Método | Query SQL | Descrição |
+|--------|-----------|-----------|
+| `getAllUsers()` | `SELECT * FROM users` | Retorna todos os usuários |
+| `getUserById(id)` | `SELECT * FROM users WHERE id = $1` | Retorna um usuário pelo ID |
+| `createUser(data)` | `INSERT INTO users (...) VALUES (...) RETURNING *` | Cria um novo usuário |
+| `update(id, data)` | `UPDATE users SET ... WHERE id = $3 RETURNING *` | Atualiza informações de um usuário |
+| `delete(id)` | `DELETE FROM users WHERE id = $1 RETURNING *` | Remove um usuário do sistema |
+
+---
+
+#### `Room` Model
+Gerencia o cadastro de salas disponíveis para reserva.
+
+#### Campos da Tabela `rooms`
+
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `id` | UUID | Identificador único da sala |
+| `id_user` | UUID | ID do usuário responsável pela reserva da sala |
+| `name` | TEXT | Nome da sala |
+| `floor` | INT | Andar onde a sala está localizada |
+
+#### Métodos Disponíveis
+
+| Método | Query SQL | Descrição |
+|--------|-----------|-----------|
+| `getAll()` | `SELECT * FROM rooms` | Lista todas as salas |
+| `getById(id)` | `SELECT * FROM rooms WHERE id = $1` | Retorna uma sala pelo ID |
+| `create(data)` | `INSERT INTO rooms (...) VALUES (...) RETURNING *` | Cria uma nova sala |
+| `update(id, data)` | `UPDATE rooms SET ... WHERE id = $4 RETURNING *` | Atualiza os dados da sala |
+| `delete(id)` | `DELETE FROM rooms WHERE id = $1 RETURNING *` | Remove uma sala do sistema |
+
+---
+
+### `Booking` Model
+Controla as reservas feitas por usuários para uma determinada sala e horário.
+
+#### Campos da Tabela `bookings`
+
+| Campo | Tipo | Descrição |
+|-------|------|-----------|
+| `id` | UUID | Identificador único da reserva |
+| `id_user` | UUID | ID do usuário que realizou a reserva |
+| `id_room` | UUID | ID da sala reservada |
+| `time` | TIMESTAMP | Horário da reserva |
+| `updated_at` | TIMESTAMP | (opcional) Data da última atualização |
+
+#### Métodos Disponíveis
+
+| Método | Query SQL | Descrição |
+|--------|-----------|-----------|
+| `getAll()` | `SELECT * FROM bookings` | Lista todas as reservas |
+| `getById(id)` | `SELECT * FROM bookings WHERE id = $1` | Retorna uma reserva pelo ID |
+| `create(data)` | `INSERT INTO bookings (...) VALUES (...) RETURNING *` | Cria uma nova reserva |
+| `update(id, data)` | `UPDATE bookings SET ... updated_at = CURRENT_TIMESTAMP ...` | Atualiza uma reserva existente |
+| `delete(id)` | `DELETE FROM bookings WHERE id = $1 RETURNING *` | Remove uma reserva do sistema |
+
+---
+
+- Os models implementados executam diretamente queries SQL com parâmetros.
+- A conexão com o banco de dados é gerenciada pelo módulo `db` (`db.query(...)`).
+- O uso de `RETURNING *` permite que o sistema obtenha o objeto recém-criado ou atualizado diretamente do banco de dados.
 
 ### 3.2. Arquitetura (Semana 5)
 
