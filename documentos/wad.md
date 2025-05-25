@@ -263,7 +263,7 @@ O documento a seguir reúne os elementos fundamentais que garantem harmonia visu
 
 Esse mini guia de estilos serve como referência fundamental para o desenvolvimento e manutenção da identidade visual do InteliRooms, garantindo uma experiência consistente e fluida para os usuários da plataforma.
 
-[Acesse aqui o mini guia de estilos e o layout da aplicação](https://www.figma.com/design/C2nASxGdM7WYo5goAXgZRp/Ponderada-3---Prot%C3%B3tipo-e-Guia-de-Estilos-Inteli-Rooms?node-id=0-1&t=dMOCNcMjffRQwRqM-1).
+[Acesse aqui o mini guia de estilos e o layout da aplicação](https://www.figma.com/design/C2nASxGdM7WYo5goAXgZRp/Ponderada-3---Prot%C3%B3tipo-e-Guia-de-Estilos-Inteli-Rooms?node-id=72-9200&p=f&t=tCZpegu8CDgzw3oO-0).
 
 
 ### 3.5. Protótipo de alta fidelidade
@@ -369,7 +369,33 @@ Acesse aqui o link do [protótipo completo com navegabilidade](https://www.figma
 
 ### 3.6. WebAPI e endpoints (Semana 05)
 
-*Utilize um link para outra página de documentação contendo a descrição completa de cada endpoint. Ou descreva aqui cada endpoint criado para seu sistema.*  
+*Utilize um link para outra página de documentação contendo a descrição completa de cada endpoint. Ou descreva aqui cada endpoint criado para seu sistema.*
+
+/ perguntar pro chat
+
++ tabela
++ a configuração do bd é feita por meio do código a seguir:
+
+const { Pool } = require('pg');
+require('dotenv').config();
+
+const isSSL = process.env.DB_SSL === 'true';
+
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+  ssl: isSSL ? { rejectUnauthorized: false } : false,
+});
+
+module.exports = {
+  query: (text, params) => pool.query(text, params),
+  connect: () => pool.connect(),
+};
+
+crie um arquivo .env para inserir as informações necessárias para a conexão.
 
 ### 3.7 Interface e Navegação (Semana 07)
 
