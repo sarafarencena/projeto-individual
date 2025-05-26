@@ -608,9 +608,324 @@ O gerenciamento de reservas existentes é realizado através de um modal (pop-up
 
 Acesse aqui o link do [protótipo completo com navegabilidade](https://www.figma.com/design/C2nASxGdM7WYo5goAXgZRp/Ponderada-3---Prot%C3%B3tipo-e-Guia-de-Estilos-Inteli-Rooms?node-id=0-1&t=dMOCNcMjffRQwRqM-1).
 
-### 3.6. WebAPI e endpoints (Semana 05)
+### 3.6. WebAPI e endpoints
 
-*Utilize um link para outra página de documentação contendo a descrição completa de cada endpoint. Ou descreva aqui cada endpoint criado para seu sistema.*
+A API desenvolvida para o InteliRooms é organizada em rotas RESTful, separadas por usuários, salas, reservas, autenticação e frontend. Cada conjunto de rotas permite operações (Create, Read, Update, Delete) específicas para o recurso, com autenticação obrigatória na maioria dos casos.
+
+As rotas seguem um padrão consistente de estrutura e resposta, utilizando parâmetros de caminho (path params) para identificar registros específicos e corpo da requisição (body) para envio de dados nos métodos POST e PUT. Todas as interações com o banco de dados são feitas por meio de queries SQL simples, garantindo clareza e eficiência.
+
+Abaixo, estão listadas as rotas disponíveis, com suas respectivas finalidades, métodos HTTP, requisitos de autenticação e exemplos de uso.
+
+#### **Rotas de Usuários**
+
+| Método | Rota | Recurso | Autenticação | Descrição |
+| :-- | :-- | :-- | :-- | :-- |
+| GET | `/users` | Users | Sim | Lista todos os usuários |
+| GET | `/users/:id` | Users | Sim | Busca usuário por ID |
+| POST | `/users` | Users | Sim | Cria novo usuário |
+| PUT | `/users/:id` | Users | Sim | Atualiza usuário existente |
+| DELETE | `/users/:id` | Users | Sim | Remove usuário |
+
+#### **GET /users**
+
+- **Finalidade**: Recupera lista completa de todos os usuários cadastrados
+- **Implementação**: Executa query `SELECT * FROM users` no banco
+- **Parâmetros**: Nenhum
+- **Resposta**: Array de objetos user
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Giulia Fachinelli",
+    "class": "T16",
+    "course": "Engenharia da Computação",
+    "group": "G02",
+    "role": "student",
+    "email": "giulia.fachinelli@email.com",
+    "created_at": "2025-01-01T10:00:00Z"
+  }
+]
+```
+
+#### **GET /users/:id**
+
+- **Finalidade**: Busca usuário específico pelo ID
+- **Implementação**: Query `SELECT * FROM users WHERE id = $1`
+- **Parâmetros**:
+    - `id` (path parameter): ID do usuário
+- **Resposta**: Objeto user ou null se não encontrado
+
+
+#### **POST /users**
+
+- **Finalidade**: Cria novo usuário no sistema
+- **Implementação**: INSERT na tabela users com campos id, name, email
+- **Body**:
+
+```json
+{
+  "id": 123,
+  "name": "Davi Abreu",
+  "email": "davi.abreu@email.com"
+}
+```
+
+- **Resposta**: Objeto user criado com todos os campos
+
+
+#### **PUT /users/:id**
+
+- **Finalidade**: Atualiza dados de usuário existente
+- **Implementação**: UPDATE na tabela users para name e email
+- **Parâmetros**:
+    - `id` (path parameter): ID do usuário
+- **Body**:
+
+```json
+{
+  "name": "Davi Abreu",
+  "email": "davi.abreu@email.com"
+}
+```
+
+- **Resposta**: Objeto user atualizado
+
+
+#### **DELETE /users/:id**
+
+- **Finalidade**: Remove usuário do sistema
+- **Implementação**: DELETE da tabela users
+- **Parâmetros**:
+    - `id` (path parameter): ID do usuário
+- **Resposta**: Boolean indicando sucesso da operação
+
+---
+
+#### **Rotas de Salas**
+
+| Método | Rota | Recurso | Autenticação | Descrição |
+| :-- | :-- | :-- | :-- | :-- |
+| GET | `/rooms` | Rooms | Sim | Lista todas as salas |
+| GET | `/rooms/:id` | Rooms | Sim | Busca sala por ID |
+| POST | `/rooms` | Rooms | Sim | Cria nova sala |
+| PUT | `/rooms/:id` | Rooms | Sim | Atualiza sala existente |
+| DELETE | `/rooms/:id` | Rooms | Sim | Remove sala |
+
+#### **GET /rooms**
+
+- **Finalidade**: Lista todas as salas disponíveis
+- **Implementação**: Query `SELECT * FROM rooms`
+- **Resposta**: Array de objetos room
+
+```json
+[
+  {
+    "id": 1,
+    "id_user": 123,
+    "name": "R07",
+    "floor": "Térreo"
+  }
+]
+```
+
+
+#### **GET /rooms/:id**
+
+- **Finalidade**: Busca sala específica pelo ID
+- **Implementação**: Query `SELECT * FROM rooms WHERE id = $1`
+- **Parâmetros**:
+    - `id` (path parameter): ID da sala
+
+
+#### **POST /rooms**
+
+- **Finalidade**: Cadastra nova sala no sistema
+- **Implementação**: INSERT na tabela rooms
+- **Body**:
+
+```json
+{
+  "id": 101,
+  "id_user": 123,
+  "name": "R10",
+  "floor": "Térreo"
+}
+```
+
+- **Resposta**: Objeto room criado
+
+
+#### **PUT /rooms/:id**
+
+- **Finalidade**: Atualiza informações de sala existente
+- **Implementação**: UPDATE na tabela rooms
+- **Parâmetros**:
+    - `id` (path parameter): ID da sala
+- **Body**: Campos a serem atualizados (id_user, name, floor)
+
+
+#### **DELETE /rooms/:id**
+
+- **Finalidade**: Remove sala do sistema
+- **Implementação**: DELETE da tabela rooms
+- **Parâmetros**:
+    - `id` (path parameter): ID da sala
+- **Resposta**: Objeto room removido
+
+---
+
+#### **Rotas de Reservas**
+
+| Método | Rota | Recurso | Autenticação | Descrição |
+| :-- | :-- | :-- | :-- | :-- |
+| GET | `/bookings` | Bookings | Sim | Lista todas as reservas |
+| GET | `/bookings/:id` | Bookings | Sim | Busca reserva por ID |
+| POST | `/bookings` | Bookings | Sim | Cria nova reserva |
+| PUT | `/bookings/:id` | Bookings | Sim | Atualiza reserva existente |
+| DELETE | `/bookings/:id` | Bookings | Sim | Remove reserva |
+
+#### **GET /bookings**
+
+- **Finalidade**: Lista todas as reservas do sistema
+- **Implementação**: Query `SELECT * FROM bookings`
+- **Resposta**: Array de objetos booking
+
+```json
+[
+  {
+    "id": 1,
+    "id_user": 123,
+    "id_room": 101,
+    "time": "2025-05-26 14:00",
+    "created_at": "2025-05-25T22:00:00Z",
+    "updated_at": "2025-05-25T22:00:00Z"
+  }
+]
+```
+
+
+#### **GET /bookings/:id**
+
+- **Finalidade**: Busca reserva específica pelo ID
+- **Implementação**: Query `SELECT * FROM bookings WHERE id = $1`
+- **Parâmetros**:
+    - `id` (path parameter): ID da reserva
+
+
+#### **POST /bookings**
+
+- **Finalidade**: Cria nova reserva de sala
+- **Implementação**: INSERT na tabela bookings
+- **Body**:
+
+```json
+{
+  "id": 201,
+  "id_user": 123,
+  "id_room": 101,
+  "time": "2025-05-26 15:00"
+}
+```
+
+- **Resposta**: Objeto booking criado
+
+
+#### **PUT /bookings/:id**
+
+- **Finalidade**: Atualiza reserva existente
+- **Implementação**: UPDATE na tabela bookings, atualiza campo updated_at automaticamente
+- **Parâmetros**:
+    - `id` (path parameter): ID da reserva
+- **Body**: Campos a serem atualizados (id_user, id_room, time)
+
+
+#### **DELETE /bookings/:id**
+
+- **Finalidade**: Cancela/remove reserva
+- **Implementação**: DELETE da tabela bookings
+- **Parâmetros**:
+    - `id` (path parameter): ID da reserva
+- **Resposta**: Objeto booking removido
+
+---
+
+#### Rotas de Autenticação
+
+| Método | Rota | Recurso | Autenticação | Descrição |
+| :-- | :-- | :-- | :-- | :-- |
+| POST | `/auth/signin` | Auth | Não | Realiza login do usuário |
+| POST | `/auth/signup` | Auth | Não | Registra novo usuário |
+| POST | `/auth/signout` | Auth | Sim | Realiza logout do usuário |
+| GET | `/auth/user` | Auth | Sim | Retorna dados do usuário atual |
+| POST | `/auth/refresh` | Auth | Sim | Renova token de acesso |
+
+#### **POST /auth/signin**
+
+- **Finalidade**: Autentica usuário no sistema
+- **Implementação**: Valida credenciais e gera token de acesso
+- **Body**:
+
+```json
+{
+  "email": "usuario@email.com",
+  "password": "senha123"
+}
+```
+
+- **Resposta**: Token de acesso e dados do usuário
+
+
+#### **POST /auth/signup**
+
+- **Finalidade**: Registra novo usuário no sistema
+- **Implementação**: Cria nova conta de usuário
+- **Body**: Dados completos do usuário incluindo senha
+- **Resposta**: Confirmação de registro
+
+
+#### **POST /auth/signout**
+
+- **Finalidade**: Realiza logout do usuário
+- **Implementação**: Invalida token de acesso atual
+- **Resposta**: Confirmação de logout
+
+
+#### **GET /auth/user**
+
+- **Finalidade**: Retorna dados do usuário autenticado
+- **Implementação**: Busca dados baseado no token de acesso
+- **Resposta**: Objeto com dados do usuário atual
+
+
+#### **POST /auth/refresh**
+
+- **Finalidade**: Renova token de acesso expirado
+- **Implementação**: Gera novo token baseado no refresh token
+- **Body**: Refresh token
+- **Resposta**: Novo token de acesso
+
+---
+
+#### **Rotas Frontend**
+
+| Método | Rota | Recurso | Autenticação | Descrição |
+| :-- | :-- | :-- | :-- | :-- |
+| GET | `/` | Frontend | Não | Página inicial |
+| GET | `/about` | Frontend | Não | Página sobre |
+
+#### **GET /**
+
+- **Finalidade**: Serve página inicial da aplicação
+- **Implementação**: Renderiza template main com conteúdo da page1
+- **Resposta**: HTML da página inicial
+
+
+#### **GET /about**
+
+- **Finalidade**: Serve página sobre/informações
+- **Implementação**: Renderiza template main com conteúdo da page2
+- **Resposta**: HTML da página sobre
 
 ### 3.7 Interface e Navegação (Semana 07)
 
