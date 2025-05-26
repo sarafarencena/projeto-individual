@@ -137,6 +137,65 @@ ALTER TABLE "bookings" ADD FOREIGN KEY ("id_user") REFERENCES "rooms" ("id");
 
 
 ### 3.1.1 BD e Models
+#### Banco de Dados
+Para que o sistema funcione corretamente, é necessário configurar a conexão com o banco de dados PostgreSQL e com o Supabase (utilizado para autenticação). Esta seção apresenta os trechos de código responsáveis por essas conexões e orientações sobre como definir as variáveis de ambiente necessárias.
+
+A **conexão** com o **banco de dados PostgreSQL** é realizada utilizando o pacote `pg`.
+
+```js
+const { Pool } = require('pg');
+require('dotenv').config();
+
+const isSSL = process.env.DB_SSL === 'true';
+
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+  ssl: isSSL ? { rejectUnauthorized: false } : false,
+});
+
+module.exports = {
+  query: (text, params) => pool.query(text, params),
+  connect: () => pool.connect(),
+};
+```
+
+Crie um arquivo `.env` contendo as seguintes variáveis:
+```js
+DB_USER=
+DB_HOST=
+DB_DATABASE=
+DB_PASSWORD=
+DB_PORT=
+DB_SSL=
+PORT=
+```
+
+**Conexão com o Supabase**
+
+O Supabase é utilizado para **autenticação de usuários**. Abaixo está o código para configurar a conexão com o serviço, também utilizando variáveis de ambiente:
+```js
+const { createClient } = require('@supabase/supabase-js');
+require('dotenv').config();
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_ANON_KEY;
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error('Missing Supabase environment variables');
+}
+const supabase = createClient(supabaseUrl, supabaseKey);
+module.exports = supabase;
+```
+
+Adicione as variáveis necessárias no arquivo `.env`:
+```js
+SUPABASE_URL=
+SUPABASE_ANON_KEY=
+```
+
+#### Models
 Esta seção descreve os **models** implementados no sistema web, responsáveis pela **comunicação com o banco de dados PostgreSQL**. Cada model representa uma entidade do sistema, com métodos que executam as operações básicas (CRUD).
 
 ---
@@ -217,16 +276,120 @@ Controla as reservas feitas por usuários para uma determinada sala e horário.
 - A conexão com o banco de dados é gerenciada pelo módulo `db` (`db.query(...)`).
 - O uso de `RETURNING *` permite que o sistema obtenha o objeto recém-criado ou atualizado diretamente do banco de dados.
 
-### 3.2. Arquitetura (Semana 5)
+### 3.2. Arquitetura
+O diagrama a seguir representa a arquitetura da aplicação **InteliRooms**, estruturada segundo o padrão **MVC** (Model-View-Controller). Este padrão foi escolhido para garantir organização, escalabilidade e separação de responsabilidades entre as diferentes camadas da aplicação.
 
-*Posicione aqui o diagrama de arquitetura da sua solução de aplicação web. Atualize sempre que necessário.*
+<div align="center">
 
-**Instruções para criação do diagrama de arquitetura**  
-- **Model**: A camada que lida com a lógica de negócios e interage com o banco de dados.
-- **View**: A camada responsável pela interface de usuário.
-- **Controller**: A camada que recebe as requisições, processa as ações e atualiza o modelo e a visualização.
-  
-*Adicione as setas e explicações sobre como os dados fluem entre o Model, Controller e View.*
+<sub> Figura 3 - Diagrama Arquitetura MVC </sub>
+</div>
+
+
+```mermaid
+flowchart LR
+ subgraph LoginView["Login Page"]
+        LoginComponents["• Login Form<br>"]
+  end
+ subgraph SignupView["Signup Page"]
+        SignupComponents["• Registration Form<br>"]
+  end
+ subgraph BookingsView["Bookings Page"]
+        BookingsComponents["• Rooms<br>• Booking Form<br>• User Dashboard"]
+  end
+ subgraph Views["📄Views"]
+    direction TB
+        LoginView
+        SignupView
+        BookingsView
+  end
+ subgraph AuthController["AuthController"]
+        AuthMethods["• signup<br>• signin<br>• signout<br>• getCurrentUser<br>• refreshToken"]
+  end
+ subgraph BookingController["BookingController"]
+        BookingMethods["• getAll<br>• getById<br>• create<br>• update<br>• delete"]
+  end
+ subgraph RoomController["RoomController"]
+        RoomMethods["• getAll<br>• getById<br>• create<br>• update<br>• delete"]
+  end
+ subgraph UserController["UserController"]
+        UserMethods["• getAll<br>• getById<br>• create<br>• update<br>• delete"]
+  end
+ subgraph Controllers["🎮 Controllers"]
+    direction TB
+        AuthController
+        BookingController
+        RoomController
+        UserController
+  end
+ subgraph UserModel["Users"]
+        UserFields["• id<br>• name<br>• class<br>• course<br>• group<br>• role<br>• email<br>• createdAt"]
+  end
+ subgraph RoomModel["Rooms"]
+        RoomFields["• id<br>• idUser<br>• name<br>• floor"]
+  end
+ subgraph BookingModel["Bookings"]
+        BookingFields["• id<br>• idRoom<br>• idUser<br>• time<br>• createdAt<br>• updatedAt"]
+  end
+ subgraph Models["📊 Models"]
+    direction TB
+        UserModel
+        RoomModel
+        BookingModel
+  end
+    Browser["🌐 Browser/Client"] <--> Views
+    Views --> Controllers
+    Controllers --> Models
+    Models --> Database["🗄️ Database"]
+    AuthController --> UserModel
+    UserController --> UserModel
+    RoomController --> RoomModel
+    BookingController --> BookingModel
+    LoginView --> AuthController
+    SignupView --> AuthController
+    BookingsView --> BookingController & RoomController & UserController
+    BookingModel --> UserModel & RoomModel
+     Browser:::browserBox
+     Views:::viewBox
+     Controllers:::controllerBox
+     Models:::modelBox
+     Database:::databaseBox
+    style LoginComponents stroke:#616161
+    style SignupComponents stroke:#616161
+    style BookingsComponents stroke:#616161
+    style LoginView stroke:#616161
+    style SignupView stroke:#616161
+    style BookingsView stroke:#616161
+    style AuthMethods stroke:#616161
+    style BookingMethods stroke:#616161
+    style RoomMethods stroke:#616161
+    style UserMethods stroke:#616161
+    style AuthController stroke:#616161
+    style BookingController stroke:#616161
+    style RoomController stroke:#616161
+    style UserController stroke:#616161
+    style UserFields stroke:#616161
+    style RoomFields stroke:#616161
+    style BookingFields stroke:#616161
+    style UserModel stroke:#616161
+    style RoomModel stroke:#616161
+    style BookingModel stroke:#616161
+    style Browser stroke:#616161
+    style Views stroke:#616161
+    style Controllers stroke:#616161
+    style Models stroke:#616161
+    style Database stroke:#616161
+
+```
+
+<div align="center">
+<sub> Fonte: Autoria própria, criado com Mermaid (2025) </sub>
+</div>
+<br>
+
+- A **View** é responsável pela interface com o usuário, incluindo páginas como login, cadastro e visualização de reservas. Ela se comunica diretamente com os controllers ao receber ações do usuário.
+- Os **Controllers** atuam como intermediários entre a View e os Models. Cada controller (como `AuthController`, `UserController`, `RoomController` e `BookingController`) é responsável por processar requisições específicas, a lógica de negócio e retornar as respostas adequadas.
+- A camada de **Models** contém a lógica de negócio e os esquemas de dados que representam as entidades do sistema: usuários, salas e reservas. Essa camada interage diretamente com o banco de dados.
+- Por fim, o **cliente** interage com a interface web, disparando ações que percorrem esse fluxo de comunicação entre camadas, até atingir o banco de dados e retornar a resposta apropriada.
 
 ### 3.3. Wireframes
 
