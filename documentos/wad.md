@@ -400,7 +400,7 @@ Para atender os requisitos do projeto enquanto solução para a persona que repr
 
 <div align="center">
 
-<sub>Figura 3 - Wireframe Navegação entre Telas </sub>
+<sub>Figura 4 - Wireframe Navegação entre Telas </sub>
 </div>
 
 <img src="../assets/assets_WAD/wireframeCompleto.jpg">
@@ -420,7 +420,7 @@ A tela principal se relaciona diretamente com a **US01**, pois mostra as salas d
 
 <div align="center">
 
-<sub>Figura 4 - Wireframe Tela Principal </sub>
+<sub>Figura 5 - Wireframe Tela Principal </sub>
 </div>
 
 <img src="../assets/assets_WAD/telaPrincipal.jpg">
@@ -440,7 +440,7 @@ A partir da tela principal, é possível selecionar um horário disponível na s
 
 <div align="center">
 
-<sub>Figura 5 - Wireframe Tela de Reserva </sub>
+<sub>Figura 6 - Wireframe Tela de Reserva </sub>
 </div>
 
 <img src="../assets/assets_WAD/telaReserva.jpg">
@@ -458,7 +458,7 @@ Por fim, também na tela principal, ao clicar na reserva realizada, o(a) estudan
 
 <div align="center">
 
-<sub>Figura 6 - Wireframe Tela de Cancelamento/Alteração </sub>
+<sub>Figura 7 - Wireframe Tela de Cancelamento/Alteração </sub>
 </div>
 
 <img src="../assets/assets_WAD/telaCancelarAlterar.jpg">
@@ -481,7 +481,7 @@ O documento a seguir reúne os elementos fundamentais que garantem harmonia visu
 
 <div align="center">
 
-<sub>Figura X - Mini Guia de Estilos </sub>
+<sub>Figura 8 - Mini Guia de Estilos </sub>
 </div>
 
 <img src="../assets/assets_WAD/mini-guia-estilos.png">
@@ -504,7 +504,7 @@ O documento a seguir reúne os elementos fundamentais que garantem harmonia visu
 
 Esse mini guia de estilos serve como referência fundamental para o desenvolvimento e manutenção da identidade visual do InteliRooms, garantindo uma experiência consistente e fluida para os usuários da plataforma.
 
-[Acesse aqui o mini guia de estilos e o layout da aplicação](https://www.figma.com/design/C2nASxGdM7WYo5goAXgZRp/Ponderada-3---Prot%C3%B3tipo-e-Guia-de-Estilos-Inteli-Rooms?node-id=72-9200&p=f&t=tCZpegu8CDgzw3oO-0).
+Acesse aqui o [mini guia de estilos e layout da aplicação](https://www.figma.com/design/C2nASxGdM7WYo5goAXgZRp/Ponderada-3---Prot%C3%B3tipo-e-Guia-de-Estilos-Inteli-Rooms?node-id=72-9200&p=f&t=tCZpegu8CDgzw3oO-0).
 
 
 ### 3.5. Protótipo de alta fidelidade
@@ -518,7 +518,7 @@ A tela de login serve como ponto de entrada seguro para a aplicação. Embora o 
 
 <div align="center">
 
-<sub>Figura X - Tela de Login </sub>
+<sub>Figura 9 - Tela de Login </sub>
 </div>
 
 <img src="../assets/assets_WAD/tela-login.png">
@@ -536,7 +536,7 @@ Embora o objetivo final seja a integração com a plataforma Adalove, a tela de 
 
 <div align="center">
 
-<sub>Figura X - Tela de Sign-up </sub>
+<sub>Figura 10 - Tela de Sign-up </sub>
 </div>
 
 <img src="../assets/assets_WAD/tela-signup.png">
@@ -554,7 +554,7 @@ A tela principal conta com uma matriz de salas e horários que permite visualiza
 
 <div align="center">
 
-<sub>Figura X - Tela Principal </sub>
+<sub>Figura 11 - Tela Principal </sub>
 </div>
 
 <img src="../assets/assets_WAD/tela-principal.png">
@@ -574,7 +574,7 @@ A funcionalidade de reserva é implementada através de um modal (pop-up) que so
 
 <div align="center">
 
-<sub>Figura X - Tela de Reserva </sub>
+<sub>Figura 12 - Tela de Reserva </sub>
 </div>
 
 <img src="../assets/assets_WAD/tela-reservar.png">
@@ -592,7 +592,7 @@ O gerenciamento de reservas existentes é realizado através de um modal (pop-up
 
 <div align="center">
 
-<sub>Figura X - Tela de Cancelameto/Alteração </sub>
+<sub>Figura 13 - Tela de Cancelameto/Alteração </sub>
 </div>
 
 <img src="../assets/assets_WAD/tela-cancelar-alterar.png">
