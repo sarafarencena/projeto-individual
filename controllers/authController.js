@@ -1,11 +1,11 @@
-
-
 const authService = require('../services/authService');
 
 class AuthController {
     async signUp(req, res) {
         try {
+            
             const { email, password, name, class: className, course, group } = req.body;
+            
             const data = await authService.signUp(email, password, {
                 name,
                 class: className,
@@ -14,6 +14,7 @@ class AuthController {
             });
             res.status(201).json(data);
         } catch (error) {
+            console.error(error)
             res.status(400).json({ error: error.message });
         }
     }
@@ -21,8 +22,10 @@ class AuthController {
     async signIn(req, res) {
         try {
             const { email, password } = req.body;
+
+            console.log(email, password)
             const data = await authService.signIn(email, password);
-            
+
             if (data.session) {
                 res.cookie('session', data.session.access_token, {
                     httpOnly: true,

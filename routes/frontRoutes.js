@@ -9,6 +9,16 @@ router.get('/', (req, res) => {
   });
 });
 
+router.get('/signup', (req, res) => {
+  res.render('signup')
+})
+
+// para testar com localhost:3000, add / o nome da rota, nesse caso, "teste"; att em 27/28 de maio para signin depois de funcionar, para ficar mais intuitivo
+router.get('/signin', (req, res) => {
+  res.render('signin');
+  // ao invés de passar um controller, renderiza direto a view (ajuda a testar)
+});
+
 router.get('/about', (req, res) => {
   res.render(path.join(__dirname, '../views/layout/main'), {
     pageTitle: 'Página Inicial',
@@ -17,3 +27,6 @@ router.get('/about', (req, res) => {
 });
 
 module.exports = router;
+
+// rotas que puxam as páginas
+// a rota tem o mesmo nome, nesse caso, rotas que chamam o conteúdo da página

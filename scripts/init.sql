@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS "users" (
-  "id" int PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "name" varchar,
   "class" varchar,
   "course" varchar,
@@ -10,14 +10,14 @@ CREATE TABLE IF NOT EXISTS "users" (
 );
 
 CREATE TABLE IF NOT EXISTS "rooms" (
-  "id" int PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "id_user" int,
   "name" varchar,
   "floor" varchar
 );
 
 CREATE TABLE IF NOT EXISTS "bookings" (
-  "id" int PRIMARY KEY,
+  "id" SERIAL PRIMARY KEY,
   "id_room" int,
   "id_user" int,
   "time" varchar,
