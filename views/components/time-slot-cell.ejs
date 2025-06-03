@@ -1,0 +1,8 @@
+<td class="time-slot-cell <%= isBooked ? (bookedByUser ? 'booked-by-user' : 'booked') : 'available' %>" 
+    onclick="openModal('<%= room %>', '<%= timeSlot %>', <%= isBooked %>, <%= bookedByUser %>)">
+    <% if (isBooked) { %>
+        <span class="booking-indicator">🔒</span>
+    <% } else { %>
+        <span class="booking-indicator">🔓</span>
+    <% } %>
+</td>

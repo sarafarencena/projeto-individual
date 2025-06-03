@@ -1,5 +1,3 @@
-// controllers/userController.js
-
 const userModel = require('../models/userModel');
 
 const getAllUsers = async (req, res) => {
@@ -26,8 +24,6 @@ const getUserById = async (req, res) => {
 
 const createUser = async (req, res) => {
   try {
-    //const { id, name, email } = req.body;
-    //console.log(req.body)
     const newUser = await userModel.createUser(req.body);
     res.status(201).json(newUser);
   } catch (error) {

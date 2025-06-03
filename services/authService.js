@@ -44,6 +44,11 @@ class AuthService {
             });
             
             if (error) throw new Error(`Sign in failed: ${error.message}`);
+
+            // double check to guarantee the data returns correctly
+            if (!data?.user || !data?.session) {
+                throw new Error("User or session not returned from Supabase");
+            }
             
             return {
                 user: data.user,

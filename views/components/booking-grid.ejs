@@ -1,0 +1,42 @@
+<!-- views/partials/booking-grid.ejs -->
+<div class="booking-grid">
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <% 
+                const rooms = ['R01', 'R02', 'R03', 'R04', 'R05', 'R06', 'R07', 'R08', 'R10'];
+                rooms.forEach(room => { %>
+                    <th><%= room %></th>
+                <% }); %>
+            </tr>
+        </thead>
+        <tbody>
+            <% 
+            const timeSlots = [
+                '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', 
+                '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', 
+                '19:00', '20:00', '21:00'
+            ];
+            
+            timeSlots.forEach(timeSlot => { %>
+                <tr>
+                    <td class="time-slot"><%= timeSlot %></td>
+                    <% rooms.forEach(room => { 
+                        const bookingKey = `${room}-${timeSlot}`;
+                        const booking = bookings[bookingKey];
+                        const isBooked = booking ? booking.booked : false;
+                        const bookedByUser = booking ? booking.bookedByUser : false;
+                    %>
+                        <%- include('time-slot-cell', { 
+                            room: room, 
+                            timeSlot: timeSlot, 
+                            isBooked: isBooked,
+                            bookedByUser: bookedByUser
+                        }) %>
+                    <% }); %>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>

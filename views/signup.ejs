@@ -1,40 +1,87 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup Page</title>
 </head>
+
 <body>
     <h2>Criar conta!</h2>
     <form id="signUpForm">
         <label for="name">Nome Completo *</label>
         <input type="text" id="name" name="name" required><br><br>
 
-        <label for="class">Turma *</label>
-        <input type="text" id="class" name="class" required><br><br>
+        <!-- Accordion Turma -->
+        <div class="form-group">
+            <label for="class">Turma *</span></label>
+            <select id="class" name="class">
+                <option value="" disabled selected>Selecione</option>
+                <option value="T1">T1</option>
+                <option value="T2">T2</option>
+                <option value="T3">T3</option>
+                <option value="T4">T4</option>
+                <option value="T5">T5</option>
+                <option value="T6">T6</option>
+                <option value="T7">T7</option>
+                <option value="T8">T8</option>
+                <option value="T9">T9</option>
+                <option value="T10">T10</option>
+                <option value="T11">T11</option>
+                <option value="T12">T12</option>
+                <option value="T13">T13</option>
+                <option value="T14">T14</option>
+                <option value="T15">T15</option>
+                <option value="T16">T16</option>
+                <option value="T17">T17</option>
+                <option value="T18">T18</option>
+                <option value="T19">T19</option>
+            </select>
+        </div>
 
-        <label for="group">Grupo *</label>
-        <input type="text" id="group" name="group" required><br><br>
+        <!-- Accordion Grupo -->
+        <div class="form-group">
+            <label for="group">Grupo *</span></label>
+            <select id="group" name="group">
+                <option value="" disabled selected>Selecione</option>
+                <option value="G01">G01</option>
+                <option value="G02">G02</option>
+                <option value="G03">G03</option>
+                <option value="G04">G04</option>
+                <option value="G05">G05</option>
+                <option value="G06">G06</option>
+                
+            </select>
+        </div>
 
-        <label for="course">Curso *</label>
-        <input type="text" id="course" name="course" required><br><br>
+        <!-- Accordion Curso -->
+        <div class="form-group">
+            <label for="course">Curso *</span></label>
+            <select id="course" name="course">
+                <option value="" disabled selected>Selecione</option>
+                <option value="ADM Tech">ADM Tech</option>
+                <option value="Ciências da Computação">Ciências da Computação</option>
+                <option value="Engenharia da Computação">Engenharia da Computação</option>
+                <option value="Engenharia de Software">Engenharia de Software</option>
+                <option value="Sistemas de Informação">Sistemas de Informação</option>
+            </select>
+        </div>
 
         <label for="email">Email *</label>
         <input type="text" id="email" name="email" required><br><br>
 
         <label for="password">Senha *</label>
-        <!-- Add a password input here -->
         <input type="password" id="password" name="password" required><br><br>
 
-       <!--Add a button here.-->
-       <button type="submit">Criar</button>
+        <button type="submit">Criar</button>
     </form>
 
-    <p location.href: "/signin"></p>
+    <a href="/signin">Já tem uma conta? Entre aqui.</a>
 
-    <p id="message"></p>
-    
+    <p id="message" style="color: red;"></p>
+
     <script src="scripts/scriptSignUp.js"></script>
 </body>
+
 </html>
