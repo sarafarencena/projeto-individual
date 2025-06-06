@@ -1,25 +1,15 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<%- include('components/header') %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IntelliRooms - Reserva de Salas</title>
-</head>
+<div class="container" style="margin-top: 80px; position: relative; z-index: 1; width: 90%; max-width: 1200px; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+    <%- include('components/booking-grid') %>
+</div>
 
-<body>
-    <div class="container">
-        <%- include('components/header') %>
-        <%- include('components/booking-grid') %>
-        <%- include('components/modal') %>
-    </div>
+<%- include('components/modal') %>
 
-    <script>
-        // Define o currentUserId no JavaScript do lado cliente
-        window.currentUserId = '<%= currentUserId %>';
-        // Também salva no localStorage para compatibilidade
-        localStorage.setItem("currentUserId", window.currentUserId);
-    </script>
-    <script src="scripts/scriptHome.js"></script>
-</body>
-</html>
+<% scripts = `
+<script>
+    window.currentUserId = '${currentUserId}';
+    localStorage.setItem("currentUserId", window.currentUserId);
+</script>
+<script src="/scripts/scriptHome.js"></script>
+` %>

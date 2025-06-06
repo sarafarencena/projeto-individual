@@ -1,4 +1,3 @@
-// controllers/homeController.js
 const supabase = require('../config/supabase');
 const db = require('../config/db');
 
@@ -38,7 +37,6 @@ const homeController = {
                 return res.redirect('/signin');
             }
 
-            // Buscar salas para display
             const { rows: rooms } = await db.query('SELECT code FROM rooms ORDER BY code');
             const roomCodes = rooms.map(room => room.code);
 
@@ -47,7 +45,7 @@ const homeController = {
                 bookings: bookings,
                 roomCodes: roomCodes,
                 pageTitle: 'Sistema de Reservas',
-                currentUserId: userId // Passa o userId para o template
+                currentUserId: userId
             });
         } catch (error) {
             console.error('Erro ao carregar página home:', error);

@@ -3,6 +3,7 @@ const express = require("express");
 const session = require("express-session");
 const path = require("path");
 const cors = require("cors");
+const expressLayouts = require('express-ejs-layouts');
 
 const db = require("./config/db");
 const app = express();
@@ -24,6 +25,10 @@ app.use(
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.use(expressLayouts);
+app.set('layout', 'layout/main');
+app.set("layout extractScripts", true);
+app.set("layout extractStyles", true);
 app.use(express.static("public"));
 app.use(express.json());
 

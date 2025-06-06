@@ -37,11 +37,14 @@ function openModal(roomCode, timeSlot, isBooked, bookedByUser) {
             `;
   }
 
-  modal.style.display = "block";
+  modal.classList.add('show');
+  modal.style.display = "flex";
 }
 
 function closeModal() {
-  document.getElementById("bookingModal").style.display = "none";
+  const modal = document.getElementById("bookingModal");
+  modal.classList.remove('show');
+  modal.style.display = "none";
 }
 
 async function confirmBooking(roomCode, timeSlot) {
@@ -172,7 +175,6 @@ async function cancelBooking(roomCode, timeSlot) {
   }
 }
 
-// Closing the modal by clicking out of it
 window.onclick = function (event) {
   const modal = document.getElementById("bookingModal");
   if (event.target === modal) {

@@ -3,12 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= pageTitle %></title>  
+  <title><%= typeof pageTitle !== 'undefined' ? pageTitle : 'InteliRooms' %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     <%- include('../css/style.css'); %>
   </style>
+  <%- typeof extraStyles !== 'undefined' ? extraStyles : '' %>
 </head>
 <body>
-    <h1>Login</h1>
+  <div class="app-container">
+    <div class="background-overlay"></div>
+    <%- body %>
+  </div>
+  <%- typeof scripts !== 'undefined' ? scripts : '' %>
 </body>
 </html>
