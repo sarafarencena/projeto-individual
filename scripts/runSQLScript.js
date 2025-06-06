@@ -14,18 +14,26 @@ const pool = new Pool({
   } : false
 });
 
-const runSQLScript = async () => {
-  const filePath = path.join(__dirname, 'init.sql');
+const runSQLScript = async (scriptName = 'init.sql') => {
+  const filePath = path.join(__dirname, scriptName);
+  
+  if (!fs.existsSync(filePath)) {
+    console.error(`Script file ${scriptName} does not exist!`);
+    return;
+  }
+  
   const sql = fs.readFileSync(filePath, 'utf8');
 
   try {
     await pool.query(sql);
-    console.log('Script SQL executado com sucesso!');
+    console.log(`Script SQL ${scriptName} executado com sucesso!`);
   } catch (err) {
-    console.error('Erro ao executar o script SQL:', err);
+    console.error(`Erro ao executar o script SQL ${scriptName}:`, err);
   } finally {
     await pool.end();
   }
 };
 
-runSQLScript();
+// Get script name from command line args
+const scriptName = process.argv[2] || 'init.sql';
+runSQLScript(scriptName);

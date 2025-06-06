@@ -53,6 +53,18 @@ const roomController = {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
+  },
+
+  getRoomByCode: async (req, res) => {
+    try {
+        const room = await Room.getByCode(req.params.code);
+        if (!room) {
+            return res.status(404).json({ message: 'Room not found' });
+        }
+        res.json(room);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
   }
 };
 
