@@ -525,7 +525,7 @@ A tela de login serve como ponto de entrada seguro para a aplicação. Embora o 
 <sub>Figura 14 - Tela de Login</sub>
 </div>
 
-<img src="../assets/assets_WAD/screens/signin.png">
+<img src="../assets/assets_WAD/tela-login.png">
 
 <div align="center">
 <sub>Fonte: Autoria própria (2025)</sub>
@@ -544,7 +544,7 @@ A página de cadastro inclui um formulário completo com campos para:
 <sub>Figura 15 - Tela de Cadastro</sub>
 </div>
 
-<img src="../assets/assets_WAD/screens/signup.png">
+<img src="../assets/assets_WAD/tela-signup.png">
 
 <div align="center">
 <sub>Fonte: Autoria própria (2025)</sub>
@@ -564,7 +564,7 @@ A página principal implementa a grade de reservas, que é o componente central 
 <sub>Figura 16 - Tela Principal</sub>
 </div>
 
-<img src="../assets/assets_WAD/screens/home.png">
+<img src="../assets/assets_WAD/tela-principal.png">
 
 <div align="center">
 <sub>Fonte: Autoria própria (2025)</sub>
@@ -582,7 +582,7 @@ O sistema utiliza modais para as interações de reserva e gerenciamento:
 <sub>Figura 17 - Modal de Confirmação de Reserva</sub>
 </div>
 
-<img src="../assets/assets_WAD/screens/confirmar-reserva.png">
+<img src="../assets/assets_WAD/tela-reservar.png">
 
 <div align="center">
 <sub>Fonte: Autoria própria (2025)</sub>
@@ -597,22 +597,7 @@ O sistema utiliza modais para as interações de reserva e gerenciamento:
 <sub>Figura 18 - Modal de Gerenciamento de Reserva</sub>
 </div>
 
-<img src="../assets/assets_WAD/screens/gerenciar-reserva.png">
-
-<div align="center">
-<sub>Fonte: Autoria própria (2025)</sub>
-</div>
-
-3. **Feedback de Sala Ocupada**:
-   - Exibe mensagem quando uma sala já está reservada
-   - Informa o usuário sobre a indisponibilidade
-   - Sugere tentar outro horário
-
-<div align="center">
-<sub>Figura 19 - Feedback de Sala Ocupada</sub>
-</div>
-
-<img src="../assets/assets_WAD/screens/sala-ocupada.png">
+<img src="../assets/assets_WAD/tela-cancelar-alterar.png">
 
 <div align="center">
 <sub>Fonte: Autoria própria (2025)</sub>
