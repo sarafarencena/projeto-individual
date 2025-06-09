@@ -210,6 +210,7 @@ Gerencia as informações dos usuários do sistema, como nome, e-mail e id.
 | `id` | UUID | Identificador único do usuário |
 | `name` | TEXT | Nome completo do usuário |
 | `email` | TEXT | E-mail do usuário |
+| `created_at` | TIMESTAMP | Data de criação do usuário |
 
 #### Métodos Disponíveis
 
@@ -217,8 +218,8 @@ Gerencia as informações dos usuários do sistema, como nome, e-mail e id.
 |--------|-----------|-----------|
 | `getAllUsers()` | `SELECT * FROM users` | Retorna todos os usuários |
 | `getUserById(id)` | `SELECT * FROM users WHERE id = $1` | Retorna um usuário pelo ID |
-| `createUser(data)` | `INSERT INTO users (...) VALUES (...) RETURNING *` | Cria um novo usuário |
-| `update(id, data)` | `UPDATE users SET ... WHERE id = $3 RETURNING *` | Atualiza informações de um usuário |
+| `createUser(data)` | `INSERT INTO users (name, email) VALUES ($1, $2) RETURNING *` | Cria um novo usuário |
+| `update(id, data)` | `UPDATE users SET name = $1, email = $2 WHERE id = $3 RETURNING *` | Atualiza informações de um usuário |
 | `delete(id)` | `DELETE FROM users WHERE id = $1 RETURNING *` | Remove um usuário do sistema |
 
 ---
@@ -231,9 +232,8 @@ Gerencia o cadastro de salas disponíveis para reserva.
 | Campo | Tipo | Descrição |
 |-------|------|-----------|
 | `id` | UUID | Identificador único da sala |
-| `id_user` | UUID | ID do usuário responsável pela reserva da sala |
-| `name` | TEXT | Nome da sala |
-| `floor` | INT | Andar onde a sala está localizada |
+| `code` | TEXT | Código da sala (ex: R07) |
+| `floor` | TEXT | Andar onde a sala está localizada |
 
 #### Métodos Disponíveis
 
@@ -241,13 +241,14 @@ Gerencia o cadastro de salas disponíveis para reserva.
 |--------|-----------|-----------|
 | `getAll()` | `SELECT * FROM rooms` | Lista todas as salas |
 | `getById(id)` | `SELECT * FROM rooms WHERE id = $1` | Retorna uma sala pelo ID |
-| `create(data)` | `INSERT INTO rooms (...) VALUES (...) RETURNING *` | Cria uma nova sala |
-| `update(id, data)` | `UPDATE rooms SET ... WHERE id = $4 RETURNING *` | Atualiza os dados da sala |
+| `getByCode(code)` | `SELECT * FROM rooms WHERE code = $1` | Retorna uma sala pelo código |
+| `create(data)` | `INSERT INTO rooms (code, floor) VALUES ($1, $2) RETURNING *` | Cria uma nova sala |
+| `update(id, data)` | `UPDATE rooms SET code = $1, floor = $2 WHERE id = $3 RETURNING *` | Atualiza os dados da sala |
 | `delete(id)` | `DELETE FROM rooms WHERE id = $1 RETURNING *` | Remove uma sala do sistema |
 
 ---
 
-### `Booking` Model
+#### `Booking` Model
 Controla as reservas feitas por usuários para uma determinada sala e horário.
 
 #### Campos da Tabela `bookings`
@@ -255,10 +256,11 @@ Controla as reservas feitas por usuários para uma determinada sala e horário.
 | Campo | Tipo | Descrição |
 |-------|------|-----------|
 | `id` | UUID | Identificador único da reserva |
-| `id_user` | UUID | ID do usuário que realizou a reserva |
-| `id_room` | UUID | ID da sala reservada |
-| `time` | TIMESTAMP | Horário da reserva |
-| `updated_at` | TIMESTAMP | (opcional) Data da última atualização |
+| `user_id` | UUID | ID do usuário que realizou a reserva |
+| `room_id` | UUID | ID da sala reservada |
+| `time_slot` | TEXT | Horário da reserva (formato HH:mm) |
+| `created_at` | TIMESTAMP | Data de criação da reserva |
+| `updated_at` | TIMESTAMP | Data da última atualização |
 
 #### Métodos Disponíveis
 
@@ -266,8 +268,10 @@ Controla as reservas feitas por usuários para uma determinada sala e horário.
 |--------|-----------|-----------|
 | `getAll()` | `SELECT * FROM bookings` | Lista todas as reservas |
 | `getById(id)` | `SELECT * FROM bookings WHERE id = $1` | Retorna uma reserva pelo ID |
-| `create(data)` | `INSERT INTO bookings (...) VALUES (...) RETURNING *` | Cria uma nova reserva |
-| `update(id, data)` | `UPDATE bookings SET ... updated_at = CURRENT_TIMESTAMP ...` | Atualiza uma reserva existente |
+| `getByUserRoomTime(userId, roomId, timeSlot)` | `SELECT * FROM bookings WHERE user_id = $1 AND room_id = $2 AND time_slot = $3` | Busca reserva específica |
+| `getBookingsByUser(userId)` | `SELECT * FROM bookings WHERE user_id = $1` | Lista reservas de um usuário |
+| `create(data)` | `INSERT INTO bookings (user_id, room_id, time_slot) VALUES ($1, $2, $3) RETURNING *` | Cria uma nova reserva |
+| `update(id, data)` | `UPDATE bookings SET time_slot = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *` | Atualiza uma reserva existente |
 | `delete(id)` | `DELETE FROM bookings WHERE id = $1 RETURNING *` | Remove uma reserva do sistema |
 
 ---
@@ -518,95 +522,101 @@ A tela de login serve como ponto de entrada seguro para a aplicação. Embora o 
 
 <div align="center">
 
-<sub>Figura 9 - Tela de Login </sub>
+<sub>Figura 14 - Tela de Login</sub>
 </div>
 
-<img src="../assets/assets_WAD/tela-login.png">
-
-<div align="center">
-</div>
+<img src="../assets/assets_WAD/screens/signin.png">
 
 <div align="center">
 <sub>Fonte: Autoria própria (2025)</sub>
 </div>
-<br>
 
-#### Tela de Cadastro (Signup)
-Embora o objetivo final seja a integração com a plataforma Adalove, a tela de cadastro permite atualmente que novos usuários se registrem no sistema, coletando informações essenciais para aplicar as regras de negócio adequadas (restrições por turma, grupo e curso).
-
-<div align="center">
-
-<sub>Figura 10 - Tela de Sign-up </sub>
-</div>
-
-<img src="../assets/assets_WAD/tela-signup.png">
+#### Tela de Cadastro
+A página de cadastro inclui um formulário completo com campos para:
+- Nome completo
+- Turma (select com opções T1-T19)
+- Grupo (select com opções G01-G06)
+- Curso (select com cursos disponíveis)
+- Email
+- Senha
 
 <div align="center">
+<sub>Figura 15 - Tela de Cadastro</sub>
 </div>
 
-<div align="center">
-<sub>Fonte: Autoria própria (2025)</sub>
-</div>
-<br>
-
-#### Tela Principal
-A tela principal conta com uma matriz de salas e horários que permite visualização clara da disponibilidade e acesso direto às funcionalidades de reserva, alteração e cancelamento.
-
-<div align="center">
-
-<sub>Figura 11 - Tela Principal </sub>
-</div>
-
-<img src="../assets/assets_WAD/tela-principal.png">
-
-<div align="center">
-</div>
+<img src="../assets/assets_WAD/screens/signup.png">
 
 <div align="center">
 <sub>Fonte: Autoria própria (2025)</sub>
 </div>
-<br>
 
-A partir da tela principal, o usuário pode acessar tanto a tela de reserva, quanto a de cancelamento/alteração, demonstradas a seguir.
+##### Página Principal
+A página principal implementa a grade de reservas, que é o componente central do sistema. A grade é construída dinamicamente usando EJS, com as seguintes características:
 
-#### Tela de Reserva
-A funcionalidade de reserva é implementada através de um modal (pop-up) que sobrepõe a tela principal. Este modal é ativado automaticamente quando o usuário clica em um slot de horário disponível na grade, apresentando de forma clara as informações da sala e horário selecionados para confirmação da reserva. O design modal mantém o contexto da grade principal visível ao fundo, proporcionando uma experiência fluida e intuitiva ao usuário.
-
-<div align="center">
-
-<sub>Figura 12 - Tela de Reserva </sub>
-</div>
-
-<img src="../assets/assets_WAD/tela-reservar.png">
+- Colunas representando as salas disponíveis
+- Linhas representando os horários (das 7h às 20h)
+- Células coloridas indicando disponibilidade:
+  - Verde: Sala disponível
+  - Vermelho: Sala reservada por outro usuário
+  - Azul: Sala reservada pelo usuário atual
 
 <div align="center">
+<sub>Figura 16 - Tela Principal</sub>
 </div>
 
-<div align="center">
-<sub>Fonte: Autoria própria (2025)</sub>
-</div>
-<br>
-
-#### Tela de Cancelamento/Alteração
-O gerenciamento de reservas existentes é realizado através de um modal (pop-up) que sobrepõe a tela principal, ativado quando o usuário clica em uma reserva já realizada na grade de horários. Este modal apresenta os detalhes completos da reserva selecionada e oferece duas opções principais de ação: alterar o horário da reserva ou cancelá-la completamente. O design modal preserva a visibilidade da grade ao fundo, permitindo que o usuário mantenha o contexto de sua decisão.
-
-<div align="center">
-
-<sub>Figura 13 - Tela de Cancelameto/Alteração </sub>
-</div>
-
-<img src="../assets/assets_WAD/tela-cancelar-alterar.png">
-
-<div align="center">
-</div>
+<img src="../assets/assets_WAD/screens/home.png">
 
 <div align="center">
 <sub>Fonte: Autoria própria (2025)</sub>
 </div>
-<br>
 
+##### Modais de Interação
+O sistema utiliza modais para as interações de reserva e gerenciamento:
 
-Acesse aqui o link do [protótipo completo com navegabilidade](https://www.figma.com/design/C2nASxGdM7WYo5goAXgZRp/Ponderada-3---Prot%C3%B3tipo-e-Guia-de-Estilos-Inteli-Rooms?node-id=0-1&t=dMOCNcMjffRQwRqM-1).
+1. **Modal de Reserva**:
+   - Exibe detalhes da sala e horário selecionados
+   - Botão de confirmação para realizar a reserva
+   - Validação em tempo real da disponibilidade
+
+<div align="center">
+<sub>Figura 17 - Modal de Confirmação de Reserva</sub>
+</div>
+
+<img src="../assets/assets_WAD/screens/confirmar-reserva.png">
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
+
+2. **Modal de Cancelamento/Alteração**:
+   - Exibe detalhes da reserva atual
+   - Opções para alterar horário ou cancelar reserva
+   - Confirmação antes de executar ações
+
+<div align="center">
+<sub>Figura 18 - Modal de Gerenciamento de Reserva</sub>
+</div>
+
+<img src="../assets/assets_WAD/screens/gerenciar-reserva.png">
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
+
+3. **Feedback de Sala Ocupada**:
+   - Exibe mensagem quando uma sala já está reservada
+   - Informa o usuário sobre a indisponibilidade
+   - Sugere tentar outro horário
+
+<div align="center">
+<sub>Figura 19 - Feedback de Sala Ocupada</sub>
+</div>
+
+<img src="../assets/assets_WAD/screens/sala-ocupada.png">
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
 
 ### 3.6. WebAPI e endpoints
 
@@ -708,6 +718,7 @@ Abaixo, estão listadas as rotas disponíveis, com suas respectivas finalidades,
 | :-- | :-- | :-- | :-- | :-- |
 | GET | `/rooms` | Rooms | Sim | Lista todas as salas |
 | GET | `/rooms/:id` | Rooms | Sim | Busca sala por ID |
+| GET | `/rooms/code/:code` | Rooms | Sim | Busca sala por código |
 | POST | `/rooms` | Rooms | Sim | Cria nova sala |
 | PUT | `/rooms/:id` | Rooms | Sim | Atualiza sala existente |
 | DELETE | `/rooms/:id` | Rooms | Sim | Remove sala |
@@ -737,6 +748,14 @@ Abaixo, estão listadas as rotas disponíveis, com suas respectivas finalidades,
 - **Parâmetros**:
     - `id` (path parameter): ID da sala
 
+
+#### **GET /rooms/code/:code**
+
+- **Finalidade**: Busca sala pelo código
+- **Implementação**: Query `SELECT * FROM rooms WHERE code = $1`
+- **Parâmetros**:
+    - `code` (path parameter): Código da sala (ex: R07)
+- **Resposta**: Objeto room ou null se não encontrado
 
 #### **POST /rooms**
 
@@ -781,37 +800,29 @@ Abaixo, estão listadas as rotas disponíveis, com suas respectivas finalidades,
 | :-- | :-- | :-- | :-- | :-- |
 | GET | `/bookings` | Bookings | Sim | Lista todas as reservas |
 | GET | `/bookings/:id` | Bookings | Sim | Busca reserva por ID |
+| GET | `/bookings/user/:userId/room/:roomCode/time/:timeSlot` | Bookings | Sim | Busca reserva específica por usuário, sala e horário |
+| GET | `/bookings/user/:userId` | Bookings | Sim | Lista todas as reservas de um usuário |
 | POST | `/bookings` | Bookings | Sim | Cria nova reserva |
 | PUT | `/bookings/:id` | Bookings | Sim | Atualiza reserva existente |
 | DELETE | `/bookings/:id` | Bookings | Sim | Remove reserva |
 
-#### **GET /bookings**
+#### **GET /bookings/user/:userId/room/:roomCode/time/:timeSlot**
 
-- **Finalidade**: Lista todas as reservas do sistema
-- **Implementação**: Query `SELECT * FROM bookings`
-- **Resposta**: Array de objetos booking
-
-```json
-[
-  {
-    "id": 1,
-    "id_user": 123,
-    "id_room": 101,
-    "time": "2025-05-26 14:00",
-    "created_at": "2025-05-25T22:00:00Z",
-    "updated_at": "2025-05-25T22:00:00Z"
-  }
-]
-```
-
-
-#### **GET /bookings/:id**
-
-- **Finalidade**: Busca reserva específica pelo ID
-- **Implementação**: Query `SELECT * FROM bookings WHERE id = $1`
+- **Finalidade**: Busca reserva específica por usuário, sala e horário
+- **Implementação**: Query `SELECT * FROM bookings WHERE user_id = $1 AND room_id = $2 AND time_slot = $3`
 - **Parâmetros**:
-    - `id` (path parameter): ID da reserva
+    - `userId` (path parameter): ID do usuário
+    - `roomCode` (path parameter): Código da sala
+    - `timeSlot` (path parameter): Horário da reserva
+- **Resposta**: Objeto booking ou null se não encontrado
 
+#### **GET /bookings/user/:userId**
+
+- **Finalidade**: Lista todas as reservas de um usuário específico
+- **Implementação**: Query `SELECT * FROM bookings WHERE user_id = $1`
+- **Parâmetros**:
+    - `userId` (path parameter): ID do usuário
+- **Resposta**: Array de objetos booking
 
 #### **POST /bookings**
 
@@ -862,7 +873,7 @@ Abaixo, estão listadas as rotas disponíveis, com suas respectivas finalidades,
 
 #### **POST /auth/signin**
 
-- **Finalidade**: Autentica usuário no sistema
+- **Finalidade**: Autentica usuário no sistema usando Supabase
 - **Implementação**: Valida credenciais e gera token de acesso
 - **Body**:
 
@@ -873,63 +884,256 @@ Abaixo, estão listadas as rotas disponíveis, com suas respectivas finalidades,
 }
 ```
 
-- **Resposta**: Token de acesso e dados do usuário
-
+- **Resposta**: 
+```json
+{
+  "session": {
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  },
+  "user": {
+    "id": "uuid",
+    "email": "usuario@email.com",
+    "name": "Nome do Usuário"
+  }
+}
+```
 
 #### **POST /auth/signup**
 
-- **Finalidade**: Registra novo usuário no sistema
-- **Implementação**: Cria nova conta de usuário
-- **Body**: Dados completos do usuário incluindo senha
-- **Resposta**: Confirmação de registro
+- **Finalidade**: Registra novo usuário no sistema usando Supabase
+- **Implementação**: Cria nova conta de usuário e gera token de acesso
+- **Body**:
 
+```json
+{
+  "email": "usuario@email.com",
+  "password": "senha123",
+  "name": "Nome do Usuário"
+}
+```
+
+- **Resposta**: Mesmo formato da resposta do signin
 
 #### **POST /auth/signout**
 
 - **Finalidade**: Realiza logout do usuário
-- **Implementação**: Invalida token de acesso atual
-- **Resposta**: Confirmação de logout
-
+- **Implementação**: Invalida token de acesso atual e limpa cookies
+- **Resposta**: 
+```json
+{
+  "message": "Signed out successfully"
+}
+```
 
 #### **GET /auth/user**
 
 - **Finalidade**: Retorna dados do usuário autenticado
 - **Implementação**: Busca dados baseado no token de acesso
-- **Resposta**: Objeto com dados do usuário atual
-
+- **Resposta**: 
+```json
+{
+  "id": "uuid",
+  "email": "usuario@email.com",
+  "name": "Nome do Usuário"
+}
+```
 
 #### **POST /auth/refresh**
 
 - **Finalidade**: Renova token de acesso expirado
 - **Implementação**: Gera novo token baseado no refresh token
-- **Body**: Refresh token
-- **Resposta**: Novo token de acesso
+- **Body**: 
+```json
+{
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+- **Resposta**: 
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
 
----
+#### **Segurança e Cookies**
 
-#### **Rotas Frontend**
+O sistema utiliza cookies HTTP-only para armazenar o token de acesso, com as seguintes configurações:
 
-| Método | Rota | Recurso | Autenticação | Descrição |
-| :-- | :-- | :-- | :-- | :-- |
-| GET | `/` | Frontend | Não | Página inicial |
-| GET | `/about` | Frontend | Não | Página sobre |
+```javascript
+{
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'strict',
+  maxAge: 7 * 24 * 60 * 60 * 1000 // 7 dias
+}
+```
 
-#### **GET /**
-
-- **Finalidade**: Serve página inicial da aplicação
-- **Implementação**: Renderiza template main com conteúdo da page1
-- **Resposta**: HTML da página inicial
-
-
-#### **GET /about**
-
-- **Finalidade**: Serve página sobre/informações
-- **Implementação**: Renderiza template main com conteúdo da page2
-- **Resposta**: HTML da página sobre
+Isso garante que:
+- O token não pode ser acessado por JavaScript no navegador
+- O cookie só é enviado em conexões HTTPS em produção
+- O cookie só é enviado em requisições do mesmo site
+- O token expira após 7 dias
 
 ### 3.7 Interface e Navegação (Semana 07)
 
-*Descreva e ilustre aqui o desenvolvimento do frontend do sistema web, explicando brevemente o que foi entregue em termos de código e sistema. Utilize prints de tela para ilustrar.*
+O desenvolvimento do frontend do InteliRooms foi realizado utilizando EJS (Embedded JavaScript) como template engine, permitindo a criação de páginas dinâmicas com uma estrutura modular e reutilizável. A interface foi desenvolvida seguindo o guia de estilos estabelecido, garantindo consistência visual e uma experiência de usuário intuitiva.
+
+#### Estrutura de Views
+
+O sistema utiliza uma estrutura de views organizada em componentes reutilizáveis:
+
+1. **Layout Base** (`views/layout/main.ejs`):
+   - Template base que define a estrutura HTML comum a todas as páginas
+   - Inclui configurações de meta tags, fontes e estilos globais
+   - Gerencia a injeção de scripts e estilos específicos por página
+
+2. **Componentes** (`views/components/`):
+   - `header.ejs`: Cabeçalho com logo do sistema
+   - `booking-grid.ejs`: Grade de horários e salas
+   - `modal.ejs`: Modal reutilizável para ações de reserva
+   - `time-slot-cell.ejs`: Célula individual da grade de horários
+
+3. **Páginas Principais**:
+   - `home.ejs`: Página principal com a grade de reservas
+   - `signin.ejs`: Página de login
+   - `signup.ejs`: Página de cadastro
+
+#### Implementação da Interface
+
+##### Página de Login
+A página de login apresenta um formulário simples e intuitivo, com campos para email e senha. O design segue o guia de estilos, utilizando cores e tipografia consistentes com a identidade visual do sistema.
+
+<div align="center">
+<sub>Figura 14 - Tela de Login</sub>
+</div>
+
+<img src="../assets/assets_WAD/screens/signin.png">
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
+
+##### Página de Cadastro
+A página de cadastro inclui um formulário completo com campos para:
+- Nome completo
+- Turma (select com opções T1-T19)
+- Grupo (select com opções G01-G06)
+- Curso (select com cursos disponíveis)
+- Email
+- Senha
+
+<div align="center">
+<sub>Figura 15 - Tela de Cadastro</sub>
+</div>
+
+<img src="../assets/assets_WAD/screens/signup.png">
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
+
+##### Página Principal
+A página principal implementa a grade de reservas, que é o componente central do sistema. A grade é construída dinamicamente usando EJS, com as seguintes características:
+
+- Colunas representando as salas disponíveis
+- Linhas representando os horários (das 7h às 20h)
+- Células coloridas indicando disponibilidade:
+  - Verde: Sala disponível
+  - Vermelho: Sala reservada por outro usuário
+  - Azul: Sala reservada pelo usuário atual
+
+<div align="center">
+<sub>Figura 16 - Tela Principal</sub>
+</div>
+
+<img src="../assets/assets_WAD/screens/home.png">
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
+
+##### Modais de Interação
+O sistema utiliza modais para as interações de reserva e gerenciamento:
+
+1. **Modal de Reserva**:
+   - Exibe detalhes da sala e horário selecionados
+   - Botão de confirmação para realizar a reserva
+   - Validação em tempo real da disponibilidade
+
+<div align="center">
+<sub>Figura 17 - Modal de Confirmação de Reserva</sub>
+</div>
+
+<img src="../assets/assets_WAD/screens/confirmar-reserva.png">
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
+
+2. **Modal de Cancelamento/Alteração**:
+   - Exibe detalhes da reserva atual
+   - Opções para alterar horário ou cancelar reserva
+   - Confirmação antes de executar ações
+
+<div align="center">
+<sub>Figura 18 - Modal de Gerenciamento de Reserva</sub>
+</div>
+
+<img src="../assets/assets_WAD/screens/gerenciar-reserva.png">
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
+
+3. **Feedback de Sala Ocupada**:
+   - Exibe mensagem quando uma sala já está reservada
+   - Informa o usuário sobre a indisponibilidade
+   - Sugere tentar outro horário
+
+<div align="center">
+<sub>Figura 19 - Feedback de Sala Ocupada</sub>
+</div>
+
+<img src="../assets/assets_WAD/screens/sala-ocupada.png">
+
+<div align="center">
+<sub>Fonte: Autoria própria (2025)</sub>
+</div>
+
+#### Navegação e Interatividade
+
+A navegação entre as páginas é intuitiva e direta:
+
+1. **Fluxo de Autenticação**:
+   - Usuário não autenticado é redirecionado para login
+   - Após login bem-sucedido, redirecionamento para página principal
+   - Opção de cadastro disponível na página de login
+
+2. **Interação com a Grade**:
+   - Clique em célula disponível abre modal de reserva
+   - Clique em reserva própria abre modal de gerenciamento
+   - Atualização em tempo real após ações de reserva/cancelamento
+
+3. **Feedback Visual**:
+   - Mensagens de sucesso/erro após ações
+   - Indicadores visuais de estado das células
+   - Animações suaves nas transições
+
+#### Integração com Backend
+
+A interface se comunica com o backend através de chamadas AJAX, implementadas nos scripts do lado do cliente:
+
+- `scriptHome.js`: Gerencia interações na página principal
+- `scriptSignIn.js`: Controla o processo de login
+- `scriptSignUp.js`: Gerencia o cadastro de novos usuários
+
+Cada script implementa:
+- Validação de formulários
+- Chamadas à API
+- Atualização dinâmica da interface
+- Tratamento de erros e feedback ao usuário
 
 ---
 
@@ -951,5 +1155,4 @@ Abaixo, estão listadas as rotas disponíveis, com suas respectivas finalidades,
 
 _Incluir as principais referências de seu projeto, para que seu parceiro possa consultar caso ele se interessar em aprofundar. Um exemplo de referência de livro e de site:_<br>
 
----
 ---
