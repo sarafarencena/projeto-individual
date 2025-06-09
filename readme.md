@@ -8,28 +8,67 @@ O **InteliRooms** é um sistema em desenvolvimento que visa otimizar a reserva d
 projeto-individual/
 │
 ├── config/                # Arquivos de configuração do banco
-│   └── database.js
+│   └── db.js
+│   └── supabase.js
 ├── controllers/           # Lógica de controle das requisições
-│   └── HomeController.js
+│   └── authController.js
+│   └── bookingController.js
+│   └── homeController.js
+│   └── roomController.js
+│   └── userController.js
+├── middleware/            # Ferramenta mediadora
+│   └── authMiddleware.js
+│   └── authSessionMiddleware.js
 ├── models/                # Definição de modelos de dados (estrutura do banco)
-│   └── User.js
+│   └── bookingModel.js
+│   └── roomModel.js
+│   └── userModel.js
 ├── routes/                # Definição das rotas do sistema
 │   └── index.js
 ├── services/              # Serviços auxiliares do sistema
 │   └── userService.js
-├── assets/                # Arquivos públicos como imagens e fontes
-├── scripts/               # Arquivos de JavaScript públicos
-├── styles/                # Arquivos CSS públicos
-├── tests/                 # Arquivos de testes unitários
-│   └── example.test.js
-├── .gitignore             # Arquivo para ignorar arquivos no Git
-├── .env                   # Arquivo de variáveis de ambiente
-├── jest.config.js         # Arquivo de configuração do Jest
-├── package-lock.json      # Gerenciador de dependências do Node.js
-├── package.json           # Gerenciador de dependências do Node.js
-├── readme.md              # Documentação do projeto (Markdown)
-├── server.js              # Arquivo principal que inicializa o servidor
-└── rest.http              # Teste de endpoints
+├── public/                # Arquivos públicos estáticos
+│   ├── assets/           # Imagens e recursos visuais
+│   │   ├── background.png
+│   │   └── logoInteliRooms.png
+│   └── scripts/          # Arquivos de JavaScript públicos
+│       ├── scriptHome.js
+│       ├── scriptSignIn.js
+│       └── scriptSignUp.js
+├── routes/               # Definição das rotas do sistema
+│   ├── authRoutes.js
+│   ├── bookingRoutes.js
+│   ├── frontRoutes.js
+│   ├── roomRoutes.js
+│   └── userRoutes.js
+├── scripts/              # Scripts do servidor
+│   ├── init.sql
+│   └── runSQLScript.js
+├── services/             # Serviços auxiliares do sistema
+│   ├── authService.js
+│   └── userService.js
+├── tests/                # Arquivos de testes unitários
+├── views/                # Templates EJS
+│   ├── components/       # Componentes reutilizáveis
+│   │   ├── booking-grid.ejs
+│   │   ├── header.ejs
+│   │   ├── modal.ejs
+│   │   └── time-slot-cell.ejs
+│   ├── css/             # Arquivos CSS
+│   │   └── style.css
+│   ├── layout/          # Layouts base
+│   ├── home.ejs         # Página inicial
+│   ├── signin.ejs       # Página de login
+│   └── signup.ejs       # Página de cadastro
+├── .env                 # Arquivo de variáveis de ambiente
+├── .env.example         # Exemplo de variáveis de ambiente
+├── .gitignore          # Arquivo para ignorar arquivos no Git
+├── jest.config.js      # Arquivo de configuração do Jest
+├── package-lock.json   # Lock de dependências do Node.js
+├── package.json        # Gerenciador de dependências do Node.js
+├── readme.md           # Documentação do projeto (Markdown)
+├── rest.http           # Teste de endpoints
+└── server.js           # Arquivo principal que inicializa o servidor
 ```
 
 ---
@@ -61,7 +100,7 @@ npm install
 
 #### 4. Inicie o servidor:
 ```bash
-npm start
+npm run dev
 ```
 ou
 ```bash
