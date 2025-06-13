@@ -6,11 +6,10 @@
 
 ## Sumário
 
-1. [Introdução](#c1)  
-2. [Visão Geral da Aplicação Web](#c2)  
-3. [Projeto Técnico da Aplicação Web](#c3)  
-4. [Desenvolvimento da Aplicação Web](#c4)  
-5. [Referências](#c5)  
+1. [Introdução](#c1)
+2. [Visão Geral da Aplicação Web](#c2)
+3. [Projeto Técnico da Aplicação Web](#c3)
+4. [Desenvolvimento da Aplicação Web](#c4)
 
 <br>
 
@@ -1126,18 +1125,289 @@ Cada script implementa:
 
 ### 4.1 Demonstração do Sistema Web (Semana 8)
 
-*VIDEO: Insira o link do vídeo demonstrativo nesta seção*
-*Descreva e ilustre aqui o desenvolvimento do sistema web completo, explicando brevemente o que foi entregue em termos de código e sistema. Utilize prints de tela para ilustrar.*
+**VIDEO:** (video)[]
+
+O sistema InteliRooms foi desenvolvido como uma aplicação web completa utilizando a arquitetura MVC (Model-View-Controller) com Node.js, Express.js, PostgreSQL e Supabase para autenticação. Esta seção apresenta os principais componentes implementados e suas funcionalidades.
+
+#### 4.1.1 Arquitetura e Estrutura do Sistema
+
+O sistema foi estruturado seguindo as melhores práticas de desenvolvimento web, com separação clara de responsabilidades:
+
+**Configuração e Infraestrutura:**
+- **Servidor Principal** (`server.js`): Configuração do Express.js com middleware de sessão, CORS, EJS como template engine e conexão com banco de dados PostgreSQL
+- **Configuração de Banco** (`config/db.js`): Pool de conexões PostgreSQL com suporte a SSL para produção
+- **Configuração Supabase** (`config/supabase.js`): Cliente Supabase para autenticação de usuários
+
+**Middleware de Autenticação:**
+- `authMiddleware.js`: Verificação de tokens JWT do Supabase para rotas da API
+- `authSessionMiddleware.js`: Middleware de sessão para rotas do frontend
+
+#### 4.1.2 Camada de Modelos (Models)
+
+Os modelos implementam as operações CRUD para cada entidade do sistema:
+
+**UserModel** (`models/userModel.js`):
+- `getAllUsers()`: Lista todos os usuários cadastrados
+- `getUserById(id)`: Busca usuário específico por ID
+- `createUser(data)`: Cria novo usuário no sistema
+- `update(id, data)`: Atualiza informações do usuário
+- `delete(id)`: Remove usuário do sistema
+
+**RoomModel** (`models/roomModel.js`):
+- `getAll()`: Lista todas as salas disponíveis
+- `getById(id)`: Busca sala por ID
+- `getByCode(code)`: Busca sala por código (ex: R07)
+- `create(data)`: Cadastra nova sala
+- `update(id, data)`: Atualiza informações da sala
+- `delete(id)`: Remove sala do sistema
+
+**BookingModel** (`models/bookingModel.js`):
+- `getAll()`: Lista todas as reservas
+- `getById(id)`: Busca reserva por ID
+- `create(data)`: Cria nova reserva
+- `update(id, data)`: Atualiza reserva existente
+- `delete(id)`: Remove reserva
+- `getByUserRoomTime(userId, roomId, timeSlot)`: Busca reserva específica
+- `getBookingsByUser(userId)`: Lista reservas de um usuário
+
+#### 4.1.3 Camada de Controladores (Controllers)
+
+**AuthController** (`controllers/authController.js`):
+- `signUp()`: Registro de novos usuários com criação automática de sessão
+- `signIn()`: Autenticação de usuários existentes
+- `signOut()`: Logout com limpeza de cookies e sessão
+- `getCurrentUser()`: Retorna dados do usuário autenticado
+- `refreshToken()`: Renovação de tokens de acesso
+
+**HomeController** (`controllers/homeController.js`):
+- `showHomePage()`: Renderiza página principal com grade de reservas
+- `getBookingsForGrid()`: Busca reservas formatadas para exibição na grade
+
+**BookingController** (`controllers/bookingController.js`):
+- Implementa todas as operações CRUD para reservas
+- Validação de propriedade de reservas (usuário só pode alterar suas próprias reservas)
+- Integração com autenticação de sessão
+
+**RoomController** e **UserController**:
+- Implementam operações CRUD completas para suas respectivas entidades
+- Tratamento de erros e validações apropriadas
+
+#### 4.1.4 Camada de Serviços (Services)
+
+**AuthService** (`services/authService.js`):
+- Integração completa com Supabase Auth
+- Gerenciamento de tokens e sessões
+- Sincronização de dados de usuário entre Supabase e PostgreSQL
+
+**UserService** (`services/userService.js`):
+- Operações auxiliares para gerenciamento de usuários
+- Validações e tratamento de erros específicos
+
+#### 4.1.5 Sistema de Rotas
+
+**Rotas de Autenticação** (`routes/authRoutes.js`):
+```javascript
+POST /auth/signin    - Login de usuário
+POST /auth/signup    - Registro de usuário
+POST /auth/signout   - Logout
+GET  /auth/user      - Dados do usuário atual
+POST /auth/refresh   - Renovação de token
+```
+
+**Rotas de Frontend** (`routes/frontRoutes.js`):
+```javascript
+GET /           - Página de login
+GET /signup     - Página de cadastro
+GET /signin     - Página de login
+GET /home       - Página principal (autenticada)
+```
+
+**Rotas da API**:
+- `/users/*`: Operações CRUD para usuários
+- `/rooms/*`: Operações CRUD para salas
+- `/bookings/*`: Operações CRUD para reservas
+
+#### 4.1.6 Interface do Usuário
+
+**Estrutura de Views:**
+- **Layout Base** (`views/layout/main.ejs`): Template comum com configurações globais
+- **Componentes Reutilizáveis**:
+  - `header.ejs`: Cabeçalho com logo do sistema
+  - `booking-grid.ejs`: Grade interativa de horários e salas
+  - `modal.ejs`: Modal para ações de reserva/cancelamento
+  - `time-slot-cell.ejs`: Célula individual da grade
+
+**Páginas Principais:**
+- `signin.ejs`: Formulário de login com validação
+- `signup.ejs`: Formulário de cadastro com campos específicos (turma, grupo, curso)
+- `home.ejs`: Página principal com grade de reservas interativa
+
+**Scripts Frontend:**
+- `scriptSignIn.js`: Gerencia processo de login com AJAX
+- `scriptSignUp.js`: Controla cadastro de usuários
+- `scriptHome.js`: Implementa interatividade da grade de reservas
+
+#### 4.1.7 Banco de Dados
+
+**Esquema Implementado** (`scripts/init.sql`):
+```sql
+-- Tabela de usuários com campos específicos do Inteli
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  name varchar,
+  class varchar,      -- Turma (T1-T19)
+  course varchar,     -- Curso
+  "group" varchar,    -- Grupo (G01-G06)
+  role varchar,
+  email varchar,
+  created_at timestamp DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de salas com código único
+CREATE TABLE rooms (
+  id SERIAL PRIMARY KEY,
+  code varchar NOT NULL UNIQUE,  -- Código da sala (R07, R08, etc.)
+  name varchar,
+  floor varchar,
+  capacity int
+);
+
+-- Tabela de reservas com relacionamentos
+CREATE TABLE bookings (
+  id SERIAL PRIMARY KEY,
+  room_id int REFERENCES rooms(id),
+  user_id int REFERENCES users(id),
+  time_slot varchar,  -- Horário da reserva
+  created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### 4.1.8 Funcionalidades Implementadas
+
+**Sistema de Autenticação:**
+- Registro de usuários com dados específicos do Inteli (turma, grupo, curso)
+- Login seguro com Supabase Auth
+- Gerenciamento de sessões com cookies HTTP-only
+- Middleware de proteção para rotas autenticadas
+
+**Sistema de Reservas:**
+- Grade visual interativa mostrando disponibilidade em tempo real
+- Cores diferenciadas: verde (disponível), vermelho (ocupado), azul (reserva própria)
+- Reserva com um clique em horários disponíveis
+- Cancelamento e alteração de reservas próprias
+- Validação de conflitos de horários
+
+**Interface Responsiva:**
+- Design baseado no guia de estilos da Adalove
+- Modais para confirmação de ações
+- Feedback visual para todas as operações
+- Navegação intuitiva entre páginas
+
+#### 4.1.9 Configuração e Deploy
+
+**Variáveis de Ambiente:**
+```
+DB_USER, DB_HOST, DB_DATABASE, DB_PASSWORD, DB_PORT, DB_SSL
+SUPABASE_URL, SUPABASE_ANON_KEY
+SESSION_SECRET, NODE_ENV, PORT
+```
+
+**Scripts NPM:**
+- `npm start`: Execução em produção
+- `npm run dev`: Desenvolvimento com nodemon
+- `npm test`: Execução de testes
+- `npm run init-db`: Inicialização do banco de dados
 
 ### 4.2 Conclusões e Trabalhos Futuros (Semana 8)
 
-*Indique pontos fortes e pontos a melhorar de maneira geral.*
-*Relacione também quaisquer outras ideias que você tenha para melhorias futuras.*
+#### 4.2.1 Pontos Fortes do Sistema
+
+**Arquitetura Sólida:**
+O sistema foi desenvolvido seguindo o padrão MVC, garantindo separação clara de responsabilidades e facilitando manutenção e escalabilidade. A estrutura modular permite fácil extensão de funcionalidades.
+
+**Segurança Robusta:**
+- Integração com Supabase Auth para autenticação segura
+- Cookies HTTP-only para proteção contra XSS
+- Middleware de autenticação em todas as rotas protegidas
+- Validação de propriedade de reservas (usuários só podem alterar suas próprias reservas)
+
+**Interface Intuitiva:**
+- Design consistente baseado no guia de estilos da Adalove
+- Grade visual que facilita a compreensão da disponibilidade
+- Feedback imediato para todas as ações do usuário
+- Navegação simples e direta
+
+**Funcionalidade Completa:**
+- Sistema completo de CRUD para todas as entidades
+- Reservas em tempo real com validação de conflitos
+- Gerenciamento de usuários com dados específicos do Inteli
+- API RESTful bem estruturada
+
+**Qualidade de Código:**
+- Testes unitários implementados
+- Tratamento adequado de erros
+- Código bem documentado e organizado
+- Uso de boas práticas de desenvolvimento
+
+#### 4.2.2 Pontos a Melhorar
+
+**Performance e Otimização:**
+- Implementar cache para consultas frequentes de disponibilidade
+- Otimizar queries do banco de dados com índices apropriados
+- Implementar paginação para listas grandes de reservas
+- Adicionar compressão de assets estáticos
+
+**Experiência do Usuário:**
+- Implementar notificações push para lembretes de reservas
+- Adicionar funcionalidade de reserva recorrente
+- Melhorar responsividade para dispositivos móveis
+- Implementar modo escuro/claro
+
+**Funcionalidades Avançadas:**
+- Sistema de aprovação para reservas de salas especiais
+- Integração com calendário (Google Calendar, Outlook)
+- Relatórios de uso das salas
+- Sistema de avaliação das salas
+
+**Monitoramento e Logs:**
+- Implementar sistema de logs estruturados
+- Adicionar monitoramento de performance
+- Implementar alertas para falhas do sistema
+- Dashboard administrativo para métricas
+
+#### 4.2.3 Trabalhos Futuros
+
+**Integração com Adalove:**
+- Desenvolvimento de widget para integração na plataforma principal
+- Single Sign-On (SSO) com sistema existente
+- Sincronização de dados de usuários
+- Padronização completa da interface
+
+**Funcionalidades Avançadas:**
+- **Sistema de Notificações**: Lembretes por email/SMS antes das reservas
+- **Reservas Inteligentes**: Sugestão de horários baseada no histórico do usuário
+- **Gestão de Recursos**: Controle de equipamentos disponíveis em cada sala
+- **Analytics**: Dashboard com estatísticas de uso e relatórios gerenciais
+
+**Melhorias Técnicas:**
+- **Microserviços**: Separação em serviços independentes para maior escalabilidade
+- **Cache Distribuído**: Implementação de Redis para melhor performance
+- **API GraphQL**: Alternativa à API REST para consultas mais eficientes
+- **Containerização**: Deploy com Docker para facilitar implantação
+
+**Expansão do Sistema:**
+- **Multi-campus**: Suporte a múltiplas unidades do Inteli
+- **Tipos de Reserva**: Diferentes categorias (estudo, reunião, apresentação)
+- **Integração IoT**: Sensores para verificação automática de ocupação
+- **App Mobile**: Aplicativo nativo para iOS e Android
+
+**Sustentabilidade e Manutenção:**
+- **Documentação Técnica**: Guias completos para desenvolvedores
+- **Testes Automatizados**: Cobertura completa com testes de integração
+- **CI/CD**: Pipeline automatizado de deploy
+- **Backup e Recuperação**: Estratégias robustas de backup de dados
+
+O sistema InteliRooms representa uma solução completa e funcional para o problema de reserva de salas no Inteli, demonstrando a aplicação prática dos conceitos de desenvolvimento web full-stack. A base sólida implementada permite futuras expansões e melhorias, atendendo às necessidades crescentes da instituição e seus usuários.
 
 
-
-## <a name="c5"></a>5. Referências
-
-_Incluir as principais referências de seu projeto, para que seu parceiro possa consultar caso ele se interessar em aprofundar. Um exemplo de referência de livro e de site:_<br>
-
----
