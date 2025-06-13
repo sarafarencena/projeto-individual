@@ -79,7 +79,7 @@ O modelo relacional desenvolvido para o **InteliRooms** busca representar os alu
 </div>
 
 <div align="center">
-<sub>Fonte: Autoria própria, criado com dbdiagram.io (2025)</sub>
+<sub>Fonte: Autoria própria, gerado pelo Supabase (2025)</sub>
 </div>
 <br>
 
