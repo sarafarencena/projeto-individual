@@ -94,45 +94,48 @@ A seguir, é possível visualizar a estrutura das tabelas e suas relações em S
 
 ```sql
 CREATE TABLE IF NOT EXISTS "users" (
-  "id" int PRIMARY KEY,
-  "name" varchar,
-  "class" varchar,
-  "course" varchar,
-  "group" varchar,
-  "role" varchar,
-  "email" varchar,
-  "created_at" timestamp
+  "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  "name" VARCHAR(255),
+  "class" VARCHAR(10),
+  "course" VARCHAR(100),
+  "group" VARCHAR(10),
+  "role" VARCHAR(50) DEFAULT 'student',
+  "email" VARCHAR(255) UNIQUE NOT NULL,
+  "created_at" TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS "rooms" (
-  "id" int PRIMARY KEY,
-  "id_user" int,
-  "name" varchar,
-  "floor" varchar
+  "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  "code" VARCHAR(10) NOT NULL UNIQUE,
+  "name" VARCHAR(100),
+  "floor" VARCHAR(20),
+  "capacity" INTEGER DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS "bookings" (
-  "id" int PRIMARY KEY,
-  "id_room" int,
-  "id_user" int,
-  "time" varchar,
-  "created_at" timestamp,
-  "updated_at" timestamp
+  "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  "room_id" UUID NOT NULL,
+  "user_id" UUID NOT NULL,
+  "time_slot" VARCHAR(20) NOT NULL,
+  "created_at" TIMESTAMPTZ DEFAULT NOW(),
+  "updated_at" TIMESTAMPTZ DEFAULT NOW()
 );
 
-ALTER TABLE "rooms" ADD FOREIGN KEY ("id_user") REFERENCES "users" ("id");
+ALTER TABLE "bookings" ADD CONSTRAINT "bookings_room_id_fkey"
+FOREIGN KEY ("room_id") REFERENCES "rooms" ("id") ON DELETE CASCADE;
 
-ALTER TABLE "bookings" ADD FOREIGN KEY ("id_room") REFERENCES "rooms" ("id");
-
-ALTER TABLE "bookings" ADD FOREIGN KEY ("id_user") REFERENCES "rooms" ("id");
+ALTER TABLE "bookings" ADD CONSTRAINT "bookings_user_id_fkey"
+FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE;
 ```
 
 ### Relacionamentos e Cardinalidade
-**Usuários <-> Salas**
-* Cada sala pode ter uma reserva por usuário (FK: is_user), relação 1:N.
+**Usuários <-> Reservas (Bookings)**
+* Cada reserva pertence a um usuário (FK: user_id), relação 1:N.
+* Um usuário pode ter múltiplas reservas.
 
-**Usuários  <-> Agendamentos**
-* Cada agendamento pertence a um usuário, relação 1:N.
+**Salas <-> Reservas (Bookings)**
+* Cada reserva está associada a uma sala (FK: room_id), relação 1:N.
+* Uma sala pode ter múltiplas reservas em horários diferentes.
 
 
 ### 3.1.1 BD e Models
@@ -206,10 +209,14 @@ Gerencia as informações dos usuários do sistema, como nome, e-mail e id.
 
 | Campo | Tipo | Descrição |
 |-------|------|-----------|
-| `id` | UUID | Identificador único do usuário |
-| `name` | TEXT | Nome completo do usuário |
-| `email` | TEXT | E-mail do usuário |
-| `created_at` | TIMESTAMP | Data de criação do usuário |
+| `id` | UUID | Identificador único do usuário (compatível com Supabase Auth) |
+| `name` | VARCHAR(255) | Nome completo do usuário |
+| `class` | VARCHAR(10) | Turma do aluno (T1-T19) |
+| `course` | VARCHAR(100) | Curso do aluno |
+| `group` | VARCHAR(10) | Grupo do aluno (G01-G06) |
+| `role` | VARCHAR(50) | Papel do usuário (padrão: 'student') |
+| `email` | VARCHAR(255) | E-mail do usuário (único) |
+| `created_at` | TIMESTAMPTZ | Data de criação do usuário |
 
 #### Métodos Disponíveis
 
@@ -231,8 +238,10 @@ Gerencia o cadastro de salas disponíveis para reserva.
 | Campo | Tipo | Descrição |
 |-------|------|-----------|
 | `id` | UUID | Identificador único da sala |
-| `code` | TEXT | Código da sala (ex: R07) |
-| `floor` | TEXT | Andar onde a sala está localizada |
+| `code` | VARCHAR(10) | Código único da sala (ex: R01, R02) |
+| `name` | VARCHAR(100) | Nome descritivo da sala |
+| `floor` | VARCHAR(20) | Andar onde a sala está localizada |
+| `capacity` | INTEGER | Capacidade máxima da sala (padrão: 0) |
 
 #### Métodos Disponíveis
 
@@ -255,11 +264,11 @@ Controla as reservas feitas por usuários para uma determinada sala e horário.
 | Campo | Tipo | Descrição |
 |-------|------|-----------|
 | `id` | UUID | Identificador único da reserva |
-| `user_id` | UUID | ID do usuário que realizou a reserva |
-| `room_id` | UUID | ID da sala reservada |
-| `time_slot` | TEXT | Horário da reserva (formato HH:mm) |
-| `created_at` | TIMESTAMP | Data de criação da reserva |
-| `updated_at` | TIMESTAMP | Data da última atualização |
+| `user_id` | UUID | ID do usuário que realizou a reserva (FK para users) |
+| `room_id` | UUID | ID da sala reservada (FK para rooms) |
+| `time_slot` | VARCHAR(20) | Horário da reserva (formato HH:mm) |
+| `created_at` | TIMESTAMPTZ | Data de criação da reserva |
+| `updated_at` | TIMESTAMPTZ | Data da última atualização (atualizada automaticamente) |
 
 #### Métodos Disponíveis
 
@@ -1252,33 +1261,33 @@ GET /home       - Página principal (autenticada)
 ```sql
 -- Tabela de usuários com campos específicos do Inteli
 CREATE TABLE users (
-  id SERIAL PRIMARY KEY,
-  name varchar,
-  class varchar,      -- Turma (T1-T19)
-  course varchar,     -- Curso
-  "group" varchar,    -- Grupo (G01-G06)
-  role varchar,
-  email varchar,
-  created_at timestamp DEFAULT CURRENT_TIMESTAMP
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name VARCHAR(255),
+  class VARCHAR(10),      -- Turma (T1-T19)
+  course VARCHAR(100),    -- Curso
+  "group" VARCHAR(10),    -- Grupo (G01-G06)
+  role VARCHAR(50) DEFAULT 'student',
+  email VARCHAR(255) UNIQUE NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- Tabela de salas com código único
 CREATE TABLE rooms (
-  id SERIAL PRIMARY KEY,
-  code varchar NOT NULL UNIQUE,  -- Código da sala (R07, R08, etc.)
-  name varchar,
-  floor varchar,
-  capacity int
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  code VARCHAR(10) NOT NULL UNIQUE,  -- Código da sala (R01, R02, etc.)
+  name VARCHAR(100),
+  floor VARCHAR(20),
+  capacity INTEGER DEFAULT 0
 );
 
 -- Tabela de reservas com relacionamentos
 CREATE TABLE bookings (
-  id SERIAL PRIMARY KEY,
-  room_id int REFERENCES rooms(id),
-  user_id int REFERENCES users(id),
-  time_slot varchar,  -- Horário da reserva
-  created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-  updated_at timestamp DEFAULT CURRENT_TIMESTAMP
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  room_id UUID NOT NULL REFERENCES rooms(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  time_slot VARCHAR(20) NOT NULL,  -- Horário da reserva
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 ```
 
