@@ -64,7 +64,7 @@ Análise da US02 com base nos critérios **INVEST**:
 
 ## <a name="c3"></a>3. Projeto da Aplicação Web
 
-### 3.1. Modelagem do banco de dados  (Semana 3)
+### 3.1. Modelagem do banco de dados
 
 ### Modelo Relacional
 O modelo relacional desenvolvido para o **InteliRooms** busca representar os alunos, as salas disponíveis e as reservas realizados. Cada entidade possui atributos que ajudam no controle de permissões.
@@ -960,7 +960,7 @@ Isso garante que:
 - O cookie só é enviado em requisições do mesmo site
 - O token expira após 7 dias
 
-### 3.7 Interface e Navegação (Semana 07)
+### 3.7 Interface e Navegação
 
 O desenvolvimento do frontend do InteliRooms foi realizado utilizando EJS (Embedded JavaScript) como template engine, permitindo a criação de páginas dinâmicas com uma estrutura modular e reutilizável. A interface foi desenvolvida seguindo o guia de estilos estabelecido, garantindo consistência visual e uma experiência de usuário intuitiva.
 
@@ -1121,9 +1121,9 @@ Cada script implementa:
 
 ---
 
-## <a name="c4"></a>4. Desenvolvimento da Aplicação Web (Semana 8)
+## <a name="c4"></a>4. Desenvolvimento da Aplicação Web
 
-### 4.1 Demonstração do Sistema Web (Semana 8)
+### 4.1 Demonstração do Sistema Web
 
 **VIDEO:** (video)[]
 
@@ -1319,7 +1319,7 @@ SESSION_SECRET, NODE_ENV, PORT
 - `npm test`: Execução de testes
 - `npm run init-db`: Inicialização do banco de dados
 
-### 4.2 Conclusões e Trabalhos Futuros (Semana 8)
+### 4.2 Conclusões e Trabalhos Futuros
 
 #### 4.2.1 Pontos Fortes do Sistema
 
