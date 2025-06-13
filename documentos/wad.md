@@ -290,14 +290,14 @@ O diagrama a seguir representa a arquitetura da aplicação **InteliRooms**, est
 
 ```mermaid
 flowchart LR
- subgraph LoginView["Login Page"]
+ subgraph LoginView["Signin Page"]
         LoginComponents["• Login Form<br>"]
   end
  subgraph SignupView["Signup Page"]
         SignupComponents["• Registration Form<br>"]
   end
- subgraph BookingsView["Bookings Page"]
-        BookingsComponents["• Rooms<br>• Booking Form<br>• User Dashboard"]
+ subgraph BookingsView["Home"]
+        BookingsComponents["• Rooms<br>• Booking Form<br>"]
   end
  subgraph Views["📄Views"]
     direction TB
