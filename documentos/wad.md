@@ -1125,9 +1125,8 @@ Cada script implementa:
 
 ### 4.1 Demonstração do Sistema Web
 
-**VIDEO:** (video)[]
+O sistema InteliRooms foi desenvolvido como uma aplicação web completa utilizando a arquitetura MVC (Model-View-Controller) com Node.js, Express.js, PostgreSQL e Supabase para autenticação. Esta seção apresenta o [vídeo demonstrativo](https://drive.google.com/file/d/1M5Kg43FnrZs9MVSY7cuSOd2m1B_Gqezi/view?usp=sharing) e uma descrição dos principais componentes implementados e suas funcionalidades.
 
-O sistema InteliRooms foi desenvolvido como uma aplicação web completa utilizando a arquitetura MVC (Model-View-Controller) com Node.js, Express.js, PostgreSQL e Supabase para autenticação. Esta seção apresenta os principais componentes implementados e suas funcionalidades.
 
 #### 4.1.1 Arquitetura e Estrutura do Sistema
 
